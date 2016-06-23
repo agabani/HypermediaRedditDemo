@@ -1,5 +1,7 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using FluentSiren.Builders;
+using RedditSharp;
 
 namespace HypermediaClient.Controllers
 {
@@ -8,7 +10,7 @@ namespace HypermediaClient.Controllers
         // GET api/values
         public IHttpActionResult Get()
         {
-            var entity = new EntityBuilder()
+            var entityBuilder = new EntityBuilder()
                 .WithClass("root")
                 .WithClass("subreddit")
                 .WithClass("pagination")
@@ -27,9 +29,30 @@ namespace HypermediaClient.Controllers
                     .WithRel("listing")
                     .WithHref("/api/root/rising")
                     .WithTitle("rising"))
-                .Build();
+                .WithLink(new LinkBuilder()
+                    .WithClass("pagination")
+                    .WithRel("next")
+                    .WithHref("/api/root?page=2")
+                    .WithTitle("next"));
 
-            return Ok(entity);
+            foreach (var post in new Reddit().FrontPage.Posts.Take(25))
+            {
+                entityBuilder.WithSubEntity(new EmbeddedRepresentationBuilder()
+                    .WithClass("post")
+                    .WithRel("post")
+                    .WithTitle(post.Title)
+                    .WithProperty("score", post.Score)
+                    .WithProperty("subreddit", post.SubredditName)
+                    .WithProperty("comments", post.CommentCount)
+                    .WithProperty("submitted", post.CreatedUTC)
+                    .WithProperty("authorName", post.AuthorName)
+                    .WithProperty("domain", post.Domain)
+                    .WithLink(new LinkBuilder()
+                        .WithRel("self")
+                        .WithHref(post.Permalink.ToString())));
+            }
+
+            return Ok(entityBuilder.Build());
         }
 
         // GET api/values/5e
