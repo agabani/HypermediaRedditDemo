@@ -203,6 +203,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RedditController.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -277,6 +278,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\_subentity_post.cshtml" />
+    <Content Include="Views\Home\_link_listing.cshtml" />
+    <Content Include="Views\Home\_link_pagination.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -6,14 +6,9 @@ namespace HypermediaClient.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string url)
+        public ActionResult Index(string url = "/api/root")
         {
             ViewBag.Title = "Home Page";
-
-            if (url == null)
-            {
-                url = "/api/root";
-            }
 
             var sirenClient = new SirenClient(new Uri(Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.Trim('/') + "/"));
 

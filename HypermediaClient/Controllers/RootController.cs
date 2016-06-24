@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Http;
 using FluentSiren.Builders;
 using RedditSharp;
@@ -37,7 +38,7 @@ namespace HypermediaClient.Controllers
 
             foreach (var post in new Reddit().FrontPage.Posts.Take(25))
             {
-                entityBuilder.WithSubEntity(new EmbeddedRepresentationBuilder()
+                var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                     .WithClass("post")
                     .WithRel("post")
                     .WithTitle(post.Title)
@@ -47,9 +48,19 @@ namespace HypermediaClient.Controllers
                     .WithProperty("submitted", post.CreatedUTC)
                     .WithProperty("authorName", post.AuthorName)
                     .WithProperty("domain", post.Domain)
+                    .WithProperty("linkFlairText", post.LinkFlairText)
                     .WithLink(new LinkBuilder()
                         .WithRel("self")
-                        .WithHref(post.Permalink.ToString())));
+                        .WithHref(post.Permalink.ToString()));
+
+                if (post.Thumbnail.OriginalString != string.Empty)
+                {
+                    embeddedRepresentationBuilder
+                        .WithProperty("thumbnail", post.Thumbnail)
+                        .WithProperty("url", post.Url);
+                }
+
+                entityBuilder.WithSubEntity(embeddedRepresentationBuilder);
             }
 
             return Ok(entityBuilder.Build());
