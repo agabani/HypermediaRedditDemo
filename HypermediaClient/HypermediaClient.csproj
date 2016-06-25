@@ -218,6 +218,7 @@
     <Compile Include="Hypermedia\Siren\SirenClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Builders\PostBuilder.cs" />
+    <Compile Include="Services\Builders\SearchBuilder.cs" />
     <Compile Include="Services\Builders\SubredditBuilder.cs" />
     <Compile Include="Services\RedditHypermediaService.cs" />
   </ItemGroup>
@@ -231,6 +232,9 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <None Include="nsfw" />
+    <None Include="self" />
+    <None Include="default" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -295,6 +299,7 @@
     <Content Include="Views\Home\_component_navbar.cshtml" />
     <Content Include="Views\Home\_property_post.cshtml" />
     <Content Include="Views\Home\_action_search.cshtml" />
+    <Content Include="Views\Home\_entity_search.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

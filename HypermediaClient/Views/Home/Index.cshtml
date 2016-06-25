@@ -14,5 +14,9 @@ else if (entity.Class.Contains("post"))
 {
     @Html.Partial("_entity_post", entity)
 }
+else if (entity.Class.Contains("search"))
+{
+    @Html.Partial("_entity_search", entity)
+}
 
 @Html.Partial("_debug_json")

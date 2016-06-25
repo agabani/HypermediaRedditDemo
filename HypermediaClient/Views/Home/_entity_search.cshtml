@@ -1,0 +1,17 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var search = Model;
+}
+
+@Html.Partial("_link_pagination", search)
+
+@if (search.Entities != null)
+{
+    foreach (var post in search.Entities.Where(e => e.Class.Contains("post")))
+    {
+        @Html.Partial("_subentity_post", post)
+    }
+}
+
+@Html.Partial("_link_pagination", search)

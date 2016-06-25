@@ -9,6 +9,10 @@ namespace HypermediaClient
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.Ignore("default");
+            routes.Ignore("nsfw");
+            routes.Ignore("self");
+
             routes.MapRoute(
                 "Reddit",
                 "{*url}",
