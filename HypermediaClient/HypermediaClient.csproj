@@ -287,7 +287,8 @@
     <Content Include="Views\Home\_link_pagination.cshtml" />
     <Content Include="Views\Home\_subentity_comment.cshtml" />
     <Content Include="Views\Home\_subentity_post.cshtml" />
-    <Content Include="Views\Home\Comments.cshtml" />
+    <Content Include="Views\Home\_entity_subreddit.cshtml" />
+    <Content Include="Views\Home\_entity_post.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

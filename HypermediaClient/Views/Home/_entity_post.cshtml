@@ -1,0 +1,9 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var post = Model;
+}
+
+@Html.Partial("_subentity_post", post)
+
+@Html.Partial("_subentity_comment", post)

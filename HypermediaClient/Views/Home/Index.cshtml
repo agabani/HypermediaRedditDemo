@@ -6,27 +6,11 @@
 
 @if (entity.Class.Contains("subreddit"))
 {
-    @Html.Partial("_link_listing", entity.Links)
-
-    @Html.Partial("_link_pagination", entity.Links)
-
-    if (entity.Entities != null)
-    {
-        foreach (var post in entity.Entities.Where(e => e.Class.Contains("post")))
-        {
-            @Html.Partial("_subentity_post", post)
-        }
-    }
-
-    @Html.Partial("_link_pagination", entity.Links)
-
-    @Html.Partial("_debug_json", entity)
+    @Html.Partial("_entity_subreddit")
 }
-
-@if (entity.Class.Contains("post"))
+else if (entity.Class.Contains("post"))
 {
-    @Html.Partial("_subentity_post", entity)
-
-    @Html.Partial("_subentity_comment", entity)
-
+    @Html.Partial("_entity_post")
 }
+
+@Html.Partial("_debug_json")

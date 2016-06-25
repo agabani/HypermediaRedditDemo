@@ -1,0 +1,19 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var subreddit = Model;
+}
+
+@Html.Partial("_link_listing", subreddit.Links)
+
+@Html.Partial("_link_pagination", subreddit.Links)
+
+@if (subreddit.Entities != null)
+{
+    foreach (var post in subreddit.Entities.Where(e => e.Class.Contains("post")))
+    {
+        @Html.Partial("_subentity_post", post)
+    }
+}
+
+@Html.Partial("_link_pagination", subreddit.Links)
