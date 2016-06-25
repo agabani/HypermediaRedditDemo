@@ -2,6 +2,7 @@
     Sub Entity: Post    
 *@
 
+@using HypermediaClient.Extensions
 @model HypermediaClient.Hypermedia.Siren.Models.Entity
 
 @{
@@ -9,10 +10,10 @@
 
     var score = post.Properties["score"];
     var linkFlairText = string.IsNullOrEmpty(post.Properties["linkFlairText"]) ? string.Empty : "[" + post.Properties["linkFlairText"] + "]";
-    var href = post.Links.Single(link => link.Rel.Contains("self")).Href;
+    var href = post.Links?.SingleOrDefault(link => link.Rel.Contains("self"))?.Href;
     var title = post.Title;
     var domain = post.Properties["domain"];
-    var comments = post.Properties["comments"];
+    var comments = post.Properties.Get("comments");
     var subreddit = post.Properties["subreddit"];
 
     var hasThumbnail = post.Properties.ContainsKey("thumbnail");

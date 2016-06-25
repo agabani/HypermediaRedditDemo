@@ -1,0 +1,19 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var entity = Model;
+}
+
+@if (entity.Entities != null)
+{
+    foreach (var comment in entity.Entities.Where(e => e.Rel.Contains("comment")))
+    {
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-11">
+                <p>@comment.Title</p>
+                @Html.Partial("_subentity_comment", comment)
+            </div>
+        </div>
+    }
+}

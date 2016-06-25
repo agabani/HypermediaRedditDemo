@@ -1,4 +1,5 @@
-﻿using HypermediaClient.Hypermedia.Siren.Models;
+﻿using System;
+using HypermediaClient.Hypermedia.Siren.Models;
 
 namespace HypermediaClient.Hypermedia.Siren
 {
@@ -6,13 +7,13 @@ namespace HypermediaClient.Hypermedia.Siren
     {
         public static Entity PrependHref(string url, Entity entity)
         {
-            ReplaceLink(url, entity);
-            ReplaceAction(url, entity);
-            ReplaceEntities(url, entity);
+            PrependLink(url, entity);
+            PrependAction(url, entity);
+            PrependEntities(url, entity);
             return entity;
         }
 
-        private static void ReplaceLink(string url, Entity entity)
+        private static void PrependLink(string url, Entity entity)
         {
             if (entity.Links == null) return;
 
@@ -22,7 +23,7 @@ namespace HypermediaClient.Hypermedia.Siren
             }
         }
 
-        private static void ReplaceAction(string url, Entity entity)
+        private static void PrependAction(string url, Entity entity)
         {
             if (entity.Actions == null) return;
 
@@ -32,7 +33,7 @@ namespace HypermediaClient.Hypermedia.Siren
             }
         }
 
-        private static void ReplaceEntities(string url, Entity entity)
+        private static void PrependEntities(string url, Entity entity)
         {
             if (entity.Entities == null) return;
 
@@ -41,5 +42,20 @@ namespace HypermediaClient.Hypermedia.Siren
                 PrependHref(url, subEntity);
             }
         }
+
+/*        private static void ReplaceHref(Uri uri, Entity entity)
+        {
+            ReplaceLink(uri, entity);
+        }*/
+
+    /*    private static void ReplaceLink(Uri uri, Entity entity)
+        {
+            if (entity.Links == null) return;
+
+            foreach (var link in entity.Links)
+            {
+                link.Href = $"{url}{link.Href}";
+            }
+        }*/
     }
 }
