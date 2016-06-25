@@ -84,7 +84,7 @@ namespace HypermediaClient.Services.Builders
                 .WithProperty("linkFlairText", post.LinkFlairText)
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(post.Permalink.ToString()));
+                    .WithHref(post.Url.LocalPath));
 
             if (post.Thumbnail.OriginalString != string.Empty)
             {
