@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Mvc;
 using FluentSiren.Models;
 using HypermediaClient.Services.Builders;
 using RedditSharp;
@@ -12,7 +15,7 @@ namespace HypermediaClient.Services
     {
         private static readonly Uri RedditBaseAddress = new Uri("https://www.reddit.com");
         private static readonly Regex PostUrlPattern = new Regex(@"r\/(\w+)\/comments\/(\w+)\/(\w*)");
-        private static readonly Regex SearchUrlPattern = new Regex(@"search\?");
+        private static readonly Regex SearchUrlPattern = new Regex(@"search\?.*(?:q=([\w\+\ ]+))");
 
         public Entity Get(string url)
         {
@@ -56,7 +59,11 @@ namespace HypermediaClient.Services
 
         private static Entity Search(string url)
         {
-            return new SearchBuilder().Build(new Reddit().Search<Thing>(url).Take(25));
+            var query = SearchUrlPattern.Match(HttpUtility.UrlDecode(url)).Groups[1].Value;
+
+            var things = new Reddit().SearchSubreddits(query).Take(3).Concat(new Reddit().Search<Thing>(query).Take(22));
+
+            return new SearchBuilder().Build(things);
         }
     }
 }

@@ -8,6 +8,18 @@
 
 @if (search.Entities != null)
 {
+    <h4>subreddits</h4>
+    <hr/>
+    foreach (var subreddit in search.Entities.Where(e => e.Class.Contains("subreddit")))
+    {
+        @Html.Partial("_subentity_subreddit", subreddit)
+    }
+}
+
+@if (search.Entities != null)
+{
+    <h4>posts</h4>
+    <hr />
     foreach (var post in search.Entities.Where(e => e.Class.Contains("post")))
     {
         @Html.Partial("_subentity_post", post)

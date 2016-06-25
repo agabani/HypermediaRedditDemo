@@ -17,11 +17,6 @@ namespace HypermediaClient.Services.Builders
             var entityBuilder = new EntityBuilder()
                 .WithClass("search")
                 .WithLink(new LinkBuilder()
-                    .WithClass("listing")
-                    .WithRel("listing")
-                    .WithHref("/api/root/rising")
-                    .WithTitle("rising"))
-                .WithLink(new LinkBuilder()
                     .WithClass("pagination")
                     .WithRel("next")
                     .WithHref("/api/root?page=2")
@@ -29,6 +24,13 @@ namespace HypermediaClient.Services.Builders
 
             foreach (var thing in things)
             {
+                var subreddit = thing as Subreddit;
+                if (subreddit != null)
+                {
+                    entityBuilder
+                        .WithSubEntity(Build(subreddit));
+                }
+
                 var post = thing as Post;
                 if (post != null)
                 {
@@ -41,7 +43,21 @@ namespace HypermediaClient.Services.Builders
                 .Build();
         }
 
-        private EmbeddedRepresentationBuilder Build(Post post)
+        private static EmbeddedRepresentationBuilder Build(Subreddit subreddit)
+        {
+            var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
+                .WithClass("subreddit")
+                .WithRel("subreddit")
+                .WithTitle(subreddit.Title)
+                .WithProperty("domain", subreddit.Url.OriginalString)
+                .WithProperty("subscribers", subreddit.Subscribers)
+                .WithProperty("created", subreddit.Created)
+                .WithProperty("description", subreddit.PublicDescription);
+
+            return embeddedRepresentationBuilder;
+        }
+
+        private static EmbeddedRepresentationBuilder Build(Post post)
         {
             var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                 .WithClass("post")
