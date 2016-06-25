@@ -76,7 +76,8 @@ namespace HypermediaClient.Services
 
         private static Entity Post(string url)
         {
-            return new PostBuilder().Build(new Reddit().GetPost(new Uri(RedditBaseAddress, url)));
+            var uri = new Uri(RedditBaseAddress, url);
+            return new PostBuilder().Build(new Reddit().GetPost(new Uri(RedditBaseAddress, uri.AbsolutePath)));
         }
 
         private static Entity Search(string url)
