@@ -289,6 +289,7 @@
     <Content Include="Views\Home\_subentity_post.cshtml" />
     <Content Include="Views\Home\_entity_subreddit.cshtml" />
     <Content Include="Views\Home\_entity_post.cshtml" />
+    <Content Include="Views\Home\_component_navbar.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

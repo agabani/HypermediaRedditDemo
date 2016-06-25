@@ -1,10 +1,10 @@
-﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+﻿@using HypermediaClient.Hypermedia.Siren.Models
+@model Entity
 
 @{
     var subreddit = Model;
 }
 
-@Html.Partial("_link_listing", subreddit.Links)
 
 @Html.Partial("_link_pagination", subreddit.Links)
 

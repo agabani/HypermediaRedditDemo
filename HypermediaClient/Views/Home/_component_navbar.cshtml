@@ -1,0 +1,29 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var entity = Model;
+}
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Hypermedia Reddit</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                @Html.Partial("_link_listing", entity)
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a data-toggle="modal" data-target="#responseModal">view JSON response</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
