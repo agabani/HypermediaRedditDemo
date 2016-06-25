@@ -285,6 +285,7 @@
     <Content Include="Views\Reddit\_link_pagination.cshtml" />
     <Content Include="Views\Reddit\_subentity_post.cshtml" />
     <Content Include="Views\Reddit\_subentity_comment.cshtml" />
+    <Content Include="Views\Reddit\_debug_json.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

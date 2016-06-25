@@ -9,10 +9,11 @@
     foreach (var comment in entity.Entities.Where(e => e.Rel.Contains("comment")))
     {
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <p>@comment.Title</p>
-                @Html.Partial("_subentity_comment", comment)
+                <div style="padding-left: 10px; border-left: 1px lightgrey solid">
+                    @Html.Partial("_subentity_comment", comment)
+                </div>
             </div>
         </div>
     }
