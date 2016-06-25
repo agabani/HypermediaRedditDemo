@@ -9,7 +9,7 @@ namespace HypermediaClient.Controllers
         // GET: Home
         public ActionResult Index(string url)
         {
-            var relativeUri = url == null ? "/api" : $"/api/{url}{Request.Query()}";
+            var relativeUri = url == null ? $"/api{Request.Query()}" : $"/api/{url}{Request.Query()}";
             return View(new SirenClient(Request.BaseAddress()).Get(relativeUri));
         }
     }

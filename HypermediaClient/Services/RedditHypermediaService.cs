@@ -20,7 +20,7 @@ namespace HypermediaClient.Services
         {
             if (url == null)
             {
-                return FrontPage();
+                return FrontPage(url);
             }
 
             if (IsPost(url))
@@ -38,7 +38,7 @@ namespace HypermediaClient.Services
                 return SubReddit(url);
             }
 
-            return FrontPage();
+            return FrontPage(url);
         }
 
         private static bool IsPost(string url)
@@ -56,9 +56,22 @@ namespace HypermediaClient.Services
             return SubredditUrlPattern.IsMatch(url);
         }
 
-        private static Entity FrontPage()
+        private static Entity FrontPage(string url)
         {
-            return new SubredditBuilder().Build(new Reddit().FrontPage);
+            var subredditBuilder = new SubredditBuilder();
+
+            if (url != null)
+            {
+                var nameValueCollection = HttpUtility.ParseQueryString(new Uri(RedditBaseAddress, url).Query);
+
+                if (nameValueCollection.AllKeys.Contains("count"))
+                {
+                    subredditBuilder
+                        .WithCount(int.Parse(nameValueCollection["count"]));
+                }
+            }
+
+            return subredditBuilder.Build(new Reddit().FrontPage);
         }
 
         private static Entity Post(string url)
@@ -77,11 +90,18 @@ namespace HypermediaClient.Services
 
         private static Entity SubReddit(string url)
         {
-            var value = SubredditUrlPattern.Match(url).Groups[1].Value;
+            var nameValueCollection = HttpUtility.ParseQueryString(new Uri(RedditBaseAddress, url).Query);
 
-            var subreddit = new Reddit().GetSubreddit(value);
+            var subredditBuilder = new SubredditBuilder();
 
-            return new SubredditBuilder().Build(subreddit);
+            if (nameValueCollection.AllKeys.Contains("count"))
+            {
+                subredditBuilder
+                    .WithCount(int.Parse(nameValueCollection["count"]));
+            }
+
+            var subRedditName = SubredditUrlPattern.Match(url).Groups[1].Value;
+            return subredditBuilder.Build(new Reddit().GetSubreddit(subRedditName));
         }
     }
 }
