@@ -77,8 +77,18 @@ namespace HypermediaClient.Services.Builders
             if (post.Thumbnail.OriginalString != string.Empty)
             {
                 embeddedRepresentationBuilder
-                    .WithProperty("thumbnail", post.Thumbnail)
-                    .WithProperty("url", post.Url);
+                        .WithProperty("url", post.Url);
+
+                if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
+                {
+                    embeddedRepresentationBuilder
+                        .WithProperty("thumbnail", "/" + post.Thumbnail);
+                }
+                else
+                {
+                    embeddedRepresentationBuilder
+                        .WithProperty("thumbnail", post.Thumbnail);
+                }
             }
 
             return embeddedRepresentationBuilder;

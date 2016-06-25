@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
 using FluentSiren.Models;
 using HypermediaClient.Services.Builders;
 using RedditSharp;
@@ -16,6 +14,7 @@ namespace HypermediaClient.Services
         private static readonly Uri RedditBaseAddress = new Uri("https://www.reddit.com");
         private static readonly Regex PostUrlPattern = new Regex(@"r\/(\w+)\/comments\/(\w+)\/(\w*)");
         private static readonly Regex SearchUrlPattern = new Regex(@"search\?.*(?:q=([\w\+\ ]+))");
+        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)");
 
         public Entity Get(string url)
         {
@@ -34,6 +33,11 @@ namespace HypermediaClient.Services
                 return Search(url);
             }
 
+            if (IsSubreddit(url))
+            {
+                return SubReddit(url);
+            }
+
             return FrontPage();
         }
 
@@ -45,6 +49,11 @@ namespace HypermediaClient.Services
         private static bool IsSearch(string url)
         {
             return SearchUrlPattern.IsMatch(url);
+        }
+
+        public static bool IsSubreddit(string url)
+        {
+            return SubredditUrlPattern.IsMatch(url);
         }
 
         private static Entity FrontPage()
@@ -64,6 +73,15 @@ namespace HypermediaClient.Services
             var things = new Reddit().SearchSubreddits(query).Take(3).Concat(new Reddit().Search<Thing>(query).Take(22));
 
             return new SearchBuilder().Build(things);
+        }
+
+        private static Entity SubReddit(string url)
+        {
+            var value = SubredditUrlPattern.Match(url).Groups[1].Value;
+
+            var subreddit = new Reddit().GetSubreddit(value);
+
+            return new SubredditBuilder().Build(subreddit);
         }
     }
 }

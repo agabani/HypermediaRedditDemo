@@ -22,8 +22,18 @@ namespace HypermediaClient.Services.Builders
             if (post.Thumbnail.OriginalString != string.Empty)
             {
                 entityBuilder
-                    .WithProperty("thumbnail", post.Thumbnail)
-                    .WithProperty("url", post.Url);
+                        .WithProperty("url", post.Url);
+
+                if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
+                {
+                    entityBuilder
+                        .WithProperty("thumbnail", "/" + post.Thumbnail);
+                }
+                else
+                {
+                    entityBuilder
+                        .WithProperty("thumbnail", post.Thumbnail);
+                }
             }
 
             BuildCommentTree(post, entityBuilder, 3);

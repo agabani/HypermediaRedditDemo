@@ -306,6 +306,7 @@
     <Content Include="Views\Home\_property_post.cshtml" />
     <Content Include="Views\Home\_action_search.cshtml" />
     <Content Include="Views\Home\_entity_search.cshtml" />
+    <Content Include="Views\Home\_subentity_subreddit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
