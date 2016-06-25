@@ -24,7 +24,7 @@ namespace HypermediaClient.Services.Builders
             if (post.Thumbnail.OriginalString != string.Empty)
             {
                 entityBuilder
-                        .WithProperty("url", post.Url);
+                    .WithProperty("url", post.Url);
 
                 if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
                 {
@@ -38,48 +38,42 @@ namespace HypermediaClient.Services.Builders
                 }
             }
 
-            BuildCommentTree(post, entityBuilder, 3);
+            BuildCommentTree(post, entityBuilder);
 
             return entityBuilder.Build();
         }
 
-        private static void BuildCommentTree(Post post, EntityBuilder builder, int depth)
+        private static void BuildCommentTree(Post post, EntityBuilder builder)
         {
-            if (depth > 0)
+            foreach (var comment in post.Comments.Where(c => c.Kind != "more"))
             {
-                foreach (var comment in post.Comments.Take(10))
-                {
-                    var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
-                        .WithRel("comment")
-                        .WithProperty("author", comment.Author)
-                        .WithProperty("score", comment.Score)
-                        .WithProperty("created", comment.CreatedUTC)
-                        .WithTitle(comment.Body);
+                var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
+                    .WithRel("comment")
+                    .WithProperty("author", comment.Author)
+                    .WithProperty("score", comment.Score)
+                    .WithProperty("created", comment.CreatedUTC)
+                    .WithTitle(comment.Body);
 
-                    BuildCommentTree(comment, embeddedRepresentationBuilder, depth--);
+                BuildCommentTree(comment, embeddedRepresentationBuilder);
 
-                    builder.WithSubEntity(embeddedRepresentationBuilder);
-                }
+                builder.WithSubEntity(embeddedRepresentationBuilder);
             }
         }
 
-        private static void BuildCommentTree(Comment post, EmbeddedRepresentationBuilder builder, int depth)
+        private static void BuildCommentTree(Comment post, EmbeddedRepresentationBuilder builder)
         {
-            if (depth > 0)
+            foreach (var comment in post.Comments.Where(c => c.Kind != "more"))
             {
-                foreach (var comment in post.Comments.Take(10))
-                {
-                    var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
-                        .WithRel("comment")
-                        .WithProperty("author", comment.Author)
-                        .WithProperty("score", comment.Score)
-                        .WithProperty("created", comment.CreatedUTC)
-                        .WithTitle(comment.Body);
+                var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
+                    .WithRel("comment")
+                    .WithProperty("author", comment.Author)
+                    .WithProperty("score", comment.Score)
+                    .WithProperty("created", comment.CreatedUTC)
+                    .WithTitle(comment.Body);
 
-                    BuildCommentTree(comment, embeddedRepresentationBuilder, depth--);
+                BuildCommentTree(comment, embeddedRepresentationBuilder);
 
-                    builder.WithSubEntity(embeddedRepresentationBuilder);
-                }
+                builder.WithSubEntity(embeddedRepresentationBuilder);
             }
         }
     }
