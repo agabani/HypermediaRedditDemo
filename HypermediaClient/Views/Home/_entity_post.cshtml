@@ -6,4 +6,10 @@
 
 @Html.Partial("_property_post", post)
 
-@Html.Partial("_subentity_comment", post)
+@if (post.Entities != null)
+{
+    foreach (var comment in post.Entities.Where(e => e.Rel.Contains("comment")))
+    {
+        @Html.Partial("_subentity_comment", comment)
+    }
+}

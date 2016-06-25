@@ -1,20 +1,30 @@
-﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+﻿@using HypermediaClient.Extensions
+@model HypermediaClient.Hypermedia.Siren.Models.Entity
 
 @{
-    var entity = Model;
+    var comment = Model;
+
+    var author = comment.Properties["author"];
+    var score = comment.Properties["score"];
+    var title = comment.Title;
+    var submitted = (DateTime.UtcNow - (DateTime) comment.Properties["created"]).Readable();
 }
 
-@if (entity.Entities != null)
-{
-    foreach (var comment in entity.Entities.Where(e => e.Rel.Contains("comment")))
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <p>@comment.Title</p>
-                <div style="padding-left: 10px; border-left: 1px lightgrey solid">
-                    @Html.Partial("_subentity_comment", comment)
-                </div>
-            </div>
+<div class="row">
+    <div class="col-md-12" style="padding-top: 10px">
+        <p style="color: slategray; font-size: 0.8em">
+            <span style="font-weight: bold">@author</span> @score point(s) @submitted ago
+        </p>
+        <p style="word-wrap: break-word">@title</p>
+        <div style="border-left: 1px lightgrey solid; padding-left: 10px;">
+
+            @if (comment.Entities != null)
+            {
+                foreach (var subComment in comment.Entities.Where(e => e.Rel.Contains("comment")))
+                {
+                    @Html.Partial("_subentity_comment", subComment)
+                }
+            }
         </div>
-    }
-}
+    </div>
+</div>

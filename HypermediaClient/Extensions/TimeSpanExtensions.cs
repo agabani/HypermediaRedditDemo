@@ -32,10 +32,10 @@ namespace HypermediaClient.Extensions
         {
             private static readonly Dictionary<string, string> Timeformats = new Dictionary<string, string>
             {
-                {"S", "{0:P:Seconds:Second}"},
-                {"M", "{0:P:Minutes:Minute}"},
-                {"H", "{0:P:Hours:Hour}"},
-                {"D", "{0:P:Days:Day}"}
+                {"S", "{0:P:seconds:second}"},
+                {"M", "{0:P:minutes:minute}"},
+                {"H", "{0:P:hours:hour}"},
+                {"D", "{0:P:days:day}"}
             };
 
             public string Format(string format, object arg, IFormatProvider formatProvider)

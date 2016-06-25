@@ -17,7 +17,9 @@ namespace HypermediaClient.Services.Builders
                 .WithProperty("domain", post.Domain)
                 .WithProperty("subreddit", post.SubredditName)
                 .WithProperty("submitted", post.CreatedUTC)
-                .WithProperty("authorName", post.AuthorName);
+                .WithProperty("authorName", post.AuthorName)
+                .WithProperty("comments", post.CommentCount)
+                .WithProperty("selfText", post.SelfText);
 
             if (post.Thumbnail.OriginalString != string.Empty)
             {
@@ -49,6 +51,9 @@ namespace HypermediaClient.Services.Builders
                 {
                     var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                         .WithRel("comment")
+                        .WithProperty("author", comment.Author)
+                        .WithProperty("score", comment.Score)
+                        .WithProperty("created", comment.CreatedUTC)
                         .WithTitle(comment.Body);
 
                     BuildCommentTree(comment, embeddedRepresentationBuilder, depth--);
@@ -66,6 +71,9 @@ namespace HypermediaClient.Services.Builders
                 {
                     var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                         .WithRel("comment")
+                        .WithProperty("author", comment.Author)
+                        .WithProperty("score", comment.Score)
+                        .WithProperty("created", comment.CreatedUTC)
                         .WithTitle(comment.Body);
 
                     BuildCommentTree(comment, embeddedRepresentationBuilder, depth--);
