@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using System.Web.Http;
 using FluentSiren.Builders;
+using FluentSiren.Models;
 using RedditSharp;
+using RedditSharp.Things;
 
-namespace HypermediaClient.Controllers
+namespace HypermediaClient.Services.Builders
 {
-    public class RootController : ApiController
+    public class SubredditBuilder
     {
-        // GET api/values
-        public IHttpActionResult Get()
+        public Entity Build(Subreddit subreddit)
         {
             var entityBuilder = new EntityBuilder()
                 .WithClass("root")
@@ -35,7 +35,7 @@ namespace HypermediaClient.Controllers
                     .WithHref("/api/root?page=2")
                     .WithTitle("next"));
 
-            foreach (var post in new Reddit().FrontPage.Posts.Take(25))
+            foreach (var post in subreddit.Posts.Take(25))
             {
                 var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                     .WithClass("post")
@@ -62,28 +62,7 @@ namespace HypermediaClient.Controllers
                 entityBuilder.WithSubEntity(embeddedRepresentationBuilder);
             }
 
-            return Ok(entityBuilder.Build());
-        }
-
-        // GET api/values/5e
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            return entityBuilder.Build();
         }
     }
 }

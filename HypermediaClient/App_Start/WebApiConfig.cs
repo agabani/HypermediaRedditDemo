@@ -17,6 +17,16 @@ namespace HypermediaClient
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "RedditApi",
+                routeTemplate: "api/{*url}",
+                defaults: new
+                {
+                    controller = "Reddit",
+                    id = RouteParameter.Optional
+                }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }

@@ -202,9 +202,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\RedditApiController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RedditController.cs" />
-    <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\ReadOnlyDictionaryExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -217,6 +216,9 @@
     <Compile Include="Hypermedia\Siren\Proxy.cs" />
     <Compile Include="Hypermedia\Siren\SirenClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Builders\PostBuilder.cs" />
+    <Compile Include="Services\Builders\SubredditBuilder.cs" />
+    <Compile Include="Services\RedditHypermediaService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -279,13 +281,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Reddit\Comments.cshtml" />
-    <Content Include="Views\Reddit\Index.cshtml" />
-    <Content Include="Views\Reddit\_link_listing.cshtml" />
-    <Content Include="Views\Reddit\_link_pagination.cshtml" />
-    <Content Include="Views\Reddit\_subentity_post.cshtml" />
-    <Content Include="Views\Reddit\_subentity_comment.cshtml" />
-    <Content Include="Views\Reddit\_debug_json.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\_debug_json.cshtml" />
+    <Content Include="Views\Home\_link_listing.cshtml" />
+    <Content Include="Views\Home\_link_pagination.cshtml" />
+    <Content Include="Views\Home\_subentity_comment.cshtml" />
+    <Content Include="Views\Home\_subentity_post.cshtml" />
+    <Content Include="Views\Home\Comments.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

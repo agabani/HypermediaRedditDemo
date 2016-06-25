@@ -1,20 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Linq;
 using FluentSiren.Builders;
-using RedditSharp;
+using FluentSiren.Models;
 using RedditSharp.Things;
 
-namespace HypermediaClient.Controllers
+namespace HypermediaClient.Services.Builders
 {
-    [RoutePrefix("api/RedditApi")]
-    public class RedditApiController : ApiController
+    public class PostBuilder
     {
-        [Route("{subRedditName}/comments/{commentId}/{commentName}")]
-        public IHttpActionResult Get(string subRedditName, string commentId, string commentName)
+        public Entity Build(Post post)
         {
-            var post = new Reddit().GetPost(new Uri($"https://www.reddit.com/r/{subRedditName}/comments/{commentId}/{commentName}"));
-
             var entityBuilder = new EntityBuilder()
                 .WithClass("post")
                 .WithProperty("linkFlairText", post.LinkFlairText)
@@ -34,7 +28,7 @@ namespace HypermediaClient.Controllers
 
             BuildCommentTree(post, entityBuilder, 3);
 
-            return Ok(entityBuilder.Build());
+            return entityBuilder.Build();
         }
 
         private static void BuildCommentTree(Post post, EntityBuilder builder, int depth)

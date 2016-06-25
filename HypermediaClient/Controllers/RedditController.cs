@@ -1,21 +1,13 @@
-﻿using System.Web.Mvc;
-using HypermediaClient.Extensions;
-using HypermediaClient.Hypermedia.Siren;
+﻿using System.Web.Http;
+using HypermediaClient.Services;
 
 namespace HypermediaClient.Controllers
 {
-    [RoutePrefix("r")]
-    public class RedditController : Controller
+    public class RedditController : ApiController
     {
-        public ActionResult Index()
+        public IHttpActionResult Get(string url)
         {
-            return View(new SirenClient(Request.BaseAddress()).Get("/api/root"));
-        }
-
-        [Route("{subRedditName}/comments/{commentId}/{commentName}")]
-        public ActionResult Comments(string subRedditName, string commentId, string commentName)
-        {
-            return View(new SirenClient(Request.BaseAddress()).Get($"/api/RedditApi/{subRedditName}/comments/{commentId}/{commentName}"));
+            return Ok(new RedditHypermediaService().Get(url));
         }
     }
 }

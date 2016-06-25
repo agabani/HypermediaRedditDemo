@@ -1,0 +1,32 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var entity = Model;
+}
+
+@if (entity.Class.Contains("subreddit"))
+{
+    @Html.Partial("_link_listing", entity.Links)
+
+    @Html.Partial("_link_pagination", entity.Links)
+
+    if (entity.Entities != null)
+    {
+        foreach (var post in entity.Entities.Where(e => e.Class.Contains("post")))
+        {
+            @Html.Partial("_subentity_post", post)
+        }
+    }
+
+    @Html.Partial("_link_pagination", entity.Links)
+
+    @Html.Partial("_debug_json", entity)
+}
+
+@if (entity.Class.Contains("post"))
+{
+    @Html.Partial("_subentity_post", entity)
+
+    @Html.Partial("_subentity_comment", entity)
+
+}
