@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using FluentSiren.AspNet.WebApi.Formatting;
 
 namespace HypermediaClient
@@ -21,15 +18,8 @@ namespace HypermediaClient
                 routeTemplate: "api/{*url}",
                 defaults: new
                 {
-                    controller = "Reddit",
-                    id = RouteParameter.Optional
+                    controller = "Reddit"
                 }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
             );
         }
     }
