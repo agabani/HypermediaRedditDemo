@@ -294,6 +294,7 @@
     <Content Include="Views\Home\_entity_post.cshtml" />
     <Content Include="Views\Home\_component_navbar.cshtml" />
     <Content Include="Views\Home\_property_post.cshtml" />
+    <Content Include="Views\Home\_action_search.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

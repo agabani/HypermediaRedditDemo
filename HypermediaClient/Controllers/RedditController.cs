@@ -7,7 +7,8 @@ namespace HypermediaClient.Controllers
     {
         public IHttpActionResult Get(string url)
         {
-            return Ok(new RedditHypermediaService().Get(url));
+            var relativeUri = url + Request.RequestUri.Query;
+            return Ok(new RedditHypermediaService().Get(relativeUri));
         }
     }
 }
