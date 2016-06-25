@@ -72,7 +72,7 @@ namespace HypermediaClient.Services
 
             var things = new Reddit().SearchSubreddits(query).Take(3).Concat(new Reddit().Search<Thing>(query).Take(22));
 
-            return new SearchBuilder().Build(things);
+            return new SearchBuilder().WithQuery(query).Build(things);
         }
 
         private static Entity SubReddit(string url)

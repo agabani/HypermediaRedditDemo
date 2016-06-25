@@ -7,8 +7,11 @@ namespace HypermediaClient.Services.Builders
 {
     public class SearchBuilder
     {
+        private string _query;
+
         public SearchBuilder WithQuery(string query)
         {
+            _query = query;
             return this;
         }
 
@@ -20,7 +23,16 @@ namespace HypermediaClient.Services.Builders
                     .WithClass("pagination")
                     .WithRel("next")
                     .WithHref("/api/root?page=2")
-                    .WithTitle("next"));
+                    .WithTitle("next"))
+                .WithAction(new ActionBuilder()
+                    .WithName("search")
+                    .WithTitle("Search")
+                    .WithMethod("GET")
+                    .WithHref("/search")
+                    .WithField(new FieldBuilder()
+                        .WithName("q")
+                        .WithType("text")
+                        .WithValue(_query)));
 
             foreach (var thing in things)
             {
@@ -77,7 +89,7 @@ namespace HypermediaClient.Services.Builders
             if (post.Thumbnail.OriginalString != string.Empty)
             {
                 embeddedRepresentationBuilder
-                        .WithProperty("url", post.Url);
+                    .WithProperty("url", post.Url);
 
                 if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
                 {
