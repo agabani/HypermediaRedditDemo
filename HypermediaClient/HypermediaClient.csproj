@@ -206,6 +206,7 @@
     <Compile Include="Controllers\RedditController.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\ReadOnlyDictionaryExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -290,6 +291,7 @@
     <Content Include="Views\Home\_entity_subreddit.cshtml" />
     <Content Include="Views\Home\_entity_post.cshtml" />
     <Content Include="Views\Home\_component_navbar.cshtml" />
+    <Content Include="Views\Home\_property_post.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

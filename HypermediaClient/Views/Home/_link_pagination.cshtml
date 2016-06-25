@@ -1,7 +1,7 @@
-﻿@model IReadOnlyCollection<HypermediaClient.Hypermedia.Siren.Models.Link>
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
 
 @{
-    var links = Model;
+    var links = Model.Links;
 
     var previousLink = links.SingleOrDefault(link => link.Rel.Contains("previous"));
     var nextLink = links.SingleOrDefault(link => link.Rel.Contains("next"));
