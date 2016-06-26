@@ -1,4 +1,5 @@
-﻿@using HypermediaClient.Extensions
+﻿@using System.Text.RegularExpressions
+@using HypermediaClient.Extensions
 @model HypermediaClient.Hypermedia.Siren.Models.Entity
 
 @{
@@ -15,7 +16,7 @@
     var authorName = post.Properties["authorName"];
 
     var hasSelfText = !string.IsNullOrEmpty(post.Properties["selfText"]);
-    var selfText = post.Properties["selfText"];
+    var selfText = new Regex(@"(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*").Replace(post.Properties["selfText"], "<a href=\"$0\">$0</a>");
 
     var submittedAgo = DateTime.UtcNow - (DateTime)submitted;
 
@@ -62,7 +63,7 @@
     <div class="row well">
         <div class="col-xs-12">
             <p>
-                @selfText
+                @Html.Raw(selfText)
             </p>
         </div>
     </div>

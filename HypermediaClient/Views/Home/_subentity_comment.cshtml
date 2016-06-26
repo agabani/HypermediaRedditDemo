@@ -1,4 +1,5 @@
-﻿@using HypermediaClient.Extensions
+﻿@using System.Text.RegularExpressions
+@using HypermediaClient.Extensions
 @model HypermediaClient.Hypermedia.Siren.Models.Entity
 
 @{
@@ -6,7 +7,7 @@
 
     var author = comment.Properties["author"];
     var score = comment.Properties["score"];
-    var title = comment.Title;
+    var title = new Regex(@"(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*").Replace(comment.Title, "<a href=\"$0\">$0</a>");
     var submitted = (DateTime.UtcNow - (DateTime) comment.Properties["created"]).Readable();
 }
 
@@ -15,7 +16,7 @@
         <p style="color: slategray; font-size: 0.8em">
             <span style="font-weight: bold">@author</span> @score point(s) @submitted ago
         </p>
-        <p style="word-wrap: break-word">@title</p>
+        <p style="word-wrap: break-word">@Html.Raw(title)</p>
         <div style="border-left: 1px lightgrey solid; padding-left: 10px;">
 
             @if (comment.Entities != null)
