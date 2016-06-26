@@ -307,6 +307,8 @@
     <Content Include="Views\Home\_action_search.cshtml" />
     <Content Include="Views\Home\_entity_search.cshtml" />
     <Content Include="Views\Home\_subentity_subreddit.cshtml" />
+    <Content Include="Views\Home\_link_search_subredditpagination.cshtml" />
+    <Content Include="Views\Home\_link_search_postpagination.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

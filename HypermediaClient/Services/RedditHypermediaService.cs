@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -83,9 +84,37 @@ namespace HypermediaClient.Services
         {
             var query = SearchUrlPattern.Match(HttpUtility.UrlDecode(url)).Groups[1].Value;
 
-            var things = new Reddit().SearchSubreddits(query).Take(3).Concat(new Reddit().Search<Thing>(query).Take(22));
+            var searchBuilder = new SearchBuilder().WithQuery(query);
 
-            return new SearchBuilder().WithQuery(query).Build(things);
+            var nameValueCollection = HttpUtility.ParseQueryString(new Uri(RedditBaseAddress, url).Query);
+
+            IEnumerable<Thing> things;
+
+            if (nameValueCollection.AllKeys.Contains("type"))
+            {
+                var type = nameValueCollection["type"];
+
+                var count = nameValueCollection.AllKeys.Contains("count") ? int.Parse(nameValueCollection["count"]) : 0;
+
+                searchBuilder.WithCount(count);
+
+                if (type == "subreddit")
+                {
+                    things = new Reddit().SearchSubreddits(query).Skip(count).Take(25);
+                    searchBuilder.OnlySubreddit();
+                }
+                else
+                {
+                    things = new Reddit().Search<Thing>(query).Skip(count).Take(25);
+                    searchBuilder.OnlyPost();
+                }
+            }
+            else
+            {
+                things = new Reddit().SearchSubreddits(query).Take(3).Concat(new Reddit().Search<Thing>(query).Take(22));
+            }
+
+            return searchBuilder.Build(things);
         }
 
         private static Entity SubReddit(string url)

@@ -7,6 +7,9 @@ namespace HypermediaClient.Services.Builders
 {
     public class SearchBuilder
     {
+        private int? _count;
+
+        private bool _onlySubreddit, _onlyPost;
         private string _query;
 
         public SearchBuilder WithQuery(string query)
@@ -15,15 +18,33 @@ namespace HypermediaClient.Services.Builders
             return this;
         }
 
+        public SearchBuilder OnlySubreddit()
+        {
+            _onlySubreddit = true;
+            _onlyPost = false;
+            return this;
+        }
+
+        public SearchBuilder OnlyPost()
+        {
+            _onlyPost = true;
+            _onlySubreddit = false;
+            return this;
+        }
+
+        public SearchBuilder WithCount(int count)
+        {
+            _count = count;
+            return this;
+        }
+
         public Entity Build(IEnumerable<Thing> things)
         {
+            var previousPage = _count == null || _count <= 0 ? null : _count < 25 ? 0 : _count - 25;
+            var nextPage = _count + 25;
+
             var entityBuilder = new EntityBuilder()
                 .WithClass("search")
-                //.WithLink(new LinkBuilder()
-                //    .WithClass("pagination")
-                //    .WithRel("next")
-                //    .WithHref("/api/root?page=2")
-                //    .WithTitle("next"))
                 .WithAction(new ActionBuilder()
                     .WithName("search")
                     .WithTitle("Search")
@@ -33,6 +54,65 @@ namespace HypermediaClient.Services.Builders
                         .WithName("q")
                         .WithType("text")
                         .WithValue(_query)));
+
+            if (_onlySubreddit)
+            {
+                entityBuilder
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("next")
+                        .WithRel("subreddit")
+                        .WithHref($"?q={_query}&type=subreddit&count={nextPage}")
+                        .WithTitle("next"));
+
+                if (previousPage != null)
+                {
+                    entityBuilder
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("previous")
+                        .WithRel("subreddit")
+                        .WithHref($"?q={_query}&type=subreddit&count={previousPage}")
+                        .WithTitle("previous"));
+                }
+            }
+            else if (_onlyPost)
+            {
+                entityBuilder
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("next")
+                        .WithRel("post")
+                        .WithHref($"?q={_query}&type=post&count={nextPage}")
+                        .WithTitle("next"));
+
+                if (previousPage != null)
+                {
+                    entityBuilder
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("previous")
+                        .WithRel("post")
+                        .WithHref($"?q={_query}&type=post&count={previousPage}")
+                        .WithTitle("previous"));
+                }
+            }
+            else
+            {
+                entityBuilder
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("next")
+                        .WithRel("subreddit")
+                        .WithHref($"?q={_query}&type=subreddit&count=3")
+                        .WithTitle("next"))
+                    .WithLink(new LinkBuilder()
+                        .WithClass("pagination")
+                        .WithRel("next")
+                        .WithRel("post")
+                        .WithHref($"?q={_query}&type=post&count=22")
+                        .WithTitle("next"));
+            }
 
             foreach (var thing in things)
             {

@@ -4,9 +4,8 @@
     var search = Model;
 }
 
-@Html.Partial("_link_pagination", search)
 
-@if (search.Entities != null)
+@if (search.Entities != null && search.Entities.Any(e => e.Rel.Contains("subreddit")))
 {
     <h4>subreddits</h4>
     <hr/>
@@ -14,16 +13,20 @@
     {
         @Html.Partial("_subentity_subreddit", subreddit)
     }
+
+    @Html.Partial("_link_search_subredditpagination", search)
 }
 
-@if (search.Entities != null)
+
+
+@if (search.Entities != null && search.Entities.Any(e => e.Rel.Contains("post")))
 {
     <h4>posts</h4>
-    <hr />
+    <hr/>
     foreach (var post in search.Entities.Where(e => e.Class.Contains("post")))
     {
         @Html.Partial("_subentity_post", post)
     }
-}
 
-@Html.Partial("_link_pagination", search)
+    @Html.Partial("_link_search_postpagination", search)
+}

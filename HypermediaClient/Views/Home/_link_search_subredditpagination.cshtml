@@ -1,0 +1,41 @@
+﻿@model HypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var links = Model.Links;
+
+    var previousLink = links?.SingleOrDefault(link => link.Rel.Contains("previous") && link.Rel.Contains("subreddit"));
+    var nextLink = links?.SingleOrDefault(link => link.Rel.Contains("next") && link.Rel.Contains("subreddit"));
+}
+
+@if (links != null)
+{
+    <nav>
+        <ul class="pager">
+            @if (previousLink != null)
+            {
+                <li class="previous">
+                    <a href="@previousLink.Href"><span aria-hidden="true">&larr;</span> Prev</a>
+                </li>
+            }
+            else
+            {
+                <li class="previous disabled">
+                    <a href="#"><span aria-hidden="true">&larr;</span> Prev</a>
+                </li>
+            }
+
+            @if (nextLink != null)
+            {
+                <li class="next">
+                    <a href="@nextLink.Href">Next <span aria-hidden="true">&rarr;</span></a>
+                </li>
+            }
+            else
+            {
+                <li class="next disabled">
+                    <a href="#">Next <span aria-hidden="true">&rarr;</span></a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
