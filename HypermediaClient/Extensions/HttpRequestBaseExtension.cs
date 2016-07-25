@@ -8,6 +8,11 @@ namespace HypermediaClient.Extensions
     {
         public static Uri BaseAddress(this HttpRequestBase request)
         {
+            if (request.Url == null || request.ApplicationPath == null)
+            {
+                throw new NullReferenceException("Request url and application path cannot be null.");
+            }
+
             return new Uri(request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.Trim('/') + "/");
         }
 

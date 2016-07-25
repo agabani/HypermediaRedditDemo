@@ -7,20 +7,17 @@ namespace HypermediaClient
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
             config.Formatters.Add(new SirenMediaFormatter());
 
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "RedditApi",
-                routeTemplate: "api/{*url}",
-                defaults: new
+                "RedditApi",
+                "api/{*url}",
+                new
                 {
                     controller = "Reddit"
-                }
-            );
+                });
         }
     }
 }

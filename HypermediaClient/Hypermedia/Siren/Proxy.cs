@@ -1,5 +1,4 @@
-﻿using System;
-using HypermediaClient.Hypermedia.Siren.Models;
+﻿using HypermediaClient.Hypermedia.Siren.Models;
 
 namespace HypermediaClient.Hypermedia.Siren
 {
@@ -42,20 +41,5 @@ namespace HypermediaClient.Hypermedia.Siren
                 PrependHref(url, subEntity);
             }
         }
-
-/*        private static void ReplaceHref(Uri uri, Entity entity)
-        {
-            ReplaceLink(uri, entity);
-        }*/
-
-    /*    private static void ReplaceLink(Uri uri, Entity entity)
-        {
-            if (entity.Links == null) return;
-
-            foreach (var link in entity.Links)
-            {
-                link.Href = $"{url}{link.Href}";
-            }
-        }*/
     }
 }

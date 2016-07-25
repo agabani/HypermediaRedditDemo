@@ -16,8 +16,12 @@ namespace HypermediaClient
             routes.MapRoute(
                 "Reddit",
                 "{*url}",
-                new {controller = "Home", action = "Index", url = UrlParameter.Optional}
-                );
+                new
+                {
+                    controller = "Home",
+                    action = "Index",
+                    url = UrlParameter.Optional
+                });
         }
     }
 }
