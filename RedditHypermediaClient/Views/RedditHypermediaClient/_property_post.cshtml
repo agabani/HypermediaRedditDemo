@@ -1,0 +1,81 @@
+﻿@using System.Text.RegularExpressions
+@using RedditHypermediaClient.Extensions
+@model RedditHypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var post = Model;
+
+    var score = post.Properties["score"];
+    var linkFlairText = string.IsNullOrEmpty(post.Properties["linkFlairText"]) ? string.Empty : "[" + post.Properties["linkFlairText"] + "]";
+    var href = post.Links?.SingleOrDefault(link => link.Rel.Contains("self"))?.Href;
+    var title = post.Title;
+    var domain = post.Properties["domain"];
+    var comments = post.Properties.Get("comments");
+    var subreddit = post.Properties["subreddit"];
+    var submitted = post.Properties["submitted"];
+    var authorName = post.Properties["authorName"];
+
+    var hasSelfText = !string.IsNullOrEmpty(post.Properties["selfText"]);
+    var selfText = new Regex(@"(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*").Replace(post.Properties["selfText"], "<a href=\"$0\">$0</a>");
+
+    var submittedAgo = DateTime.UtcNow - (DateTime)submitted;
+
+    var hasThumbnail = post.Properties.ContainsKey("thumbnail");
+    var thumbnailSource = hasThumbnail ? post.Properties["thumbnail"].ToString() : null;
+    var thumbnailUrl = hasThumbnail ? post.Properties["url"].ToString() : null;
+}
+
+<div class="row well">
+    <div class="col-md-1 col-sm-1 col-xs-2 text-center">
+        <i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i>
+        <div>@score</div>
+        <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+    </div>
+    <div class="col-md-9 col-sm-8 col-xs-7">
+        <p>
+            <span>@linkFlairText</span> <a href="@href">@title</a>
+        </p>
+        <p>(@domain)</p>
+        <p>@comments comments @subreddit</p>
+        <p>@submittedAgo.Readable() ago by @authorName</p>
+    </div>
+
+    @if (hasThumbnail)
+    {
+        <div class="col-md-2 col-sm-3 col-xs-3 text-right">
+            <a href="@thumbnailUrl">
+                <img src="@thumbnailSource" style="width: 100%"/>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-2 col-sm-3 col-xs-3 text-right">
+            <a href="@href">
+                <i class="fa fa-chevron-right fa-4x" aria-hidden="true"></i>
+            </a>
+        </div>
+    }
+</div>
+
+@if (hasSelfText)
+{
+    <div class="row well">
+        <div class="col-xs-12">
+            <p>
+                @Html.Raw(selfText)
+            </p>
+        </div>
+    </div>
+}
+
+<div class="row well">
+    <div class="col-xs-12">
+        <p>
+            <strong>@comments comments</strong>
+        </p>
+        <p>
+            Sorted by best
+        </p>
+    </div>
+</div>

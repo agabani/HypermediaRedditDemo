@@ -1,0 +1,56 @@
+﻿@*
+    Sub Entity: Post    
+*@
+
+@using RedditHypermediaClient.Extensions
+@model RedditHypermediaClient.Hypermedia.Siren.Models.Entity
+
+@{
+    var post = Model;
+
+    var score = post.Properties["score"];
+    var linkFlairText = string.IsNullOrEmpty(post.Properties["linkFlairText"]) ? string.Empty : "[" + post.Properties["linkFlairText"] + "]";
+    var href = post.Links?.SingleOrDefault(link => link.Rel.Contains("self"))?.Href;
+    var title = post.Title;
+    var domain = post.Properties["domain"];
+    var comments = post.Properties.Get("comments");
+    var subreddit = post.Properties["subreddit"];
+
+    var hasThumbnail = post.Properties.ContainsKey("thumbnail");
+    var thumbnailSource = hasThumbnail ? post.Properties["thumbnail"].ToString() : null;
+    var thumbnailUrl = hasThumbnail ? post.Properties["url"].ToString() : null;
+}
+
+<div class="row well">
+    <div class="col-md-1 col-sm-1 col-xs-2 text-center">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+        <div>@score</div>
+        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+    </div>
+    <div class="col-md-9 col-sm-8 col-xs-7">
+        <p>
+            <span>@linkFlairText</span>
+            <a href="@href">@title</a>
+            <small>(@domain)</small>
+        </p>
+
+        <p>@comments comments @subreddit</p>
+    </div>
+
+    @if (hasThumbnail)
+    {
+        <div class="col-md-2 col-sm-3 col-xs-3 text-right">
+            <a href="@thumbnailUrl">
+                <img src="@thumbnailSource" style="width: 100%"/>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-2 col-sm-3 col-xs-3 text-right">
+            <a href="@href">
+                <i class="fa fa-chevron-right fa-4x" aria-hidden="true"></i>
+            </a>
+        </div>
+    }
+</div>
