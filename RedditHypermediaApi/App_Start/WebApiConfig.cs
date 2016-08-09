@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Cors;
 using FluentSiren.AspNet.WebApi.Formatting;
 
 namespace RedditHypermediaApi
@@ -7,6 +8,8 @@ namespace RedditHypermediaApi
     {
         public static void Register(HttpConfiguration configuration)
         {
+            configuration.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
             configuration.Formatters.Add(new SirenMediaFormatter());
 
             configuration.MapHttpAttributeRoutes();
