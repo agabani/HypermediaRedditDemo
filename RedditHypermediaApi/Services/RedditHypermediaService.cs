@@ -15,7 +15,7 @@ namespace RedditHypermediaApi.Services
         private static readonly Uri RedditBaseAddress = new Uri("https://www.reddit.com");
         private static readonly Regex PostUrlPattern = new Regex(@"r\/(\w+)\/comments\/(\w+)\/(\w*)");
         private static readonly Regex SearchUrlPattern = new Regex(@"search\?.*(?:q=([\w\+\ ]+))");
-        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)");
+        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)(?:\/?(hot|new|rising|top|gilded|wiki|ads))?");
 
         public Entity Get(string url)
         {
@@ -129,7 +129,17 @@ namespace RedditHypermediaApi.Services
                     .WithCount(int.Parse(nameValueCollection["count"]));
             }
 
-            var subRedditName = SubredditUrlPattern.Match(url).Groups[1].Value;
+            var match = SubredditUrlPattern.Match(url);
+
+            var subRedditName = match.Groups[1].Value;
+            var whereOrder = match.Groups[2].Value;
+
+            if (!string.IsNullOrEmpty(whereOrder))
+            {
+                subredditBuilder
+                    .WhereOrder(whereOrder);
+            }
+
             return subredditBuilder.Build(new Reddit().GetSubreddit(subRedditName));
         }
     }

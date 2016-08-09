@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FluentSiren.Builders;
 using FluentSiren.Models;
+using RedditSharp;
 using RedditSharp.Things;
 
 namespace RedditHypermediaApi.Services.Builders
@@ -8,10 +9,17 @@ namespace RedditHypermediaApi.Services.Builders
     public class SubredditBuilder
     {
         private int? _count;
+        private string _order;
 
         public SubredditBuilder WithCount(int count)
         {
             _count = count;
+            return this;
+        }
+
+        public SubredditBuilder WhereOrder(string order)
+        {
+            _order = order;
             return this;
         }
 
@@ -24,21 +32,26 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithClass("root")
                 .WithClass("subreddit")
                 .WithClass("pagination")
-                //.WithLink(new LinkBuilder()
-                //    .WithClass("listing")
-                //    .WithRel("listing")
-                //    .WithHref("/api/root/hot")
-                //    .WithTitle("hot"))
-                //.WithLink(new LinkBuilder()
-                //    .WithClass("listing")
-                //    .WithRel("listing")
-                //    .WithHref("/api/root/new")
-                //    .WithTitle("new"))
-                //.WithLink(new LinkBuilder()
-                //    .WithClass("listing")
-                //    .WithRel("listing")
-                //    .WithHref("/api/root/rising")
-                //    .WithTitle("rising"))
+                .WithLink(new LinkBuilder()
+                    .WithClass("listing")
+                    .WithRel("listing")
+                    .WithHref($"{subreddit.Url.OriginalString}hot")
+                    .WithTitle("hot"))
+                .WithLink(new LinkBuilder()
+                    .WithClass("listing")
+                    .WithRel("listing")
+                    .WithHref($"{subreddit.Url.OriginalString}new")
+                    .WithTitle("new"))
+                .WithLink(new LinkBuilder()
+                    .WithClass("listing")
+                    .WithRel("listing")
+                    .WithHref($"{subreddit.Url.OriginalString}rising")
+                    .WithTitle("rising"))
+                .WithLink(new LinkBuilder()
+                    .WithClass("listing")
+                    .WithRel("listing")
+                    .WithHref($"{subreddit.Url.OriginalString}top")
+                    .WithTitle("top"))
                 .WithLink(new LinkBuilder()
                     .WithClass("pagination")
                     .WithRel("next")
@@ -63,7 +76,28 @@ namespace RedditHypermediaApi.Services.Builders
                         .WithTitle("Previous"));
             }
 
-            foreach (var post in subreddit.Posts.Skip(_count ?? 0).Take(25))
+            Listing<Post> listing;
+
+            switch (_order)
+            {
+                case "hot":
+                    listing = subreddit.Hot;
+                    break;
+                case "new":
+                    listing = subreddit.New;
+                    break;
+                case "rising":
+                    listing = subreddit.Rising;
+                    break;
+                case "top":
+                    listing = subreddit.GetTop(FromTime.Day);
+                    break;
+                default:
+                    listing = subreddit.Posts;
+                    break;
+            }
+
+            foreach (var post in listing.Skip(_count ?? 0).Take(25))
             {
                 var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
                     .WithClass("post")

@@ -141,7 +141,7 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithClass("subreddit")
                 .WithRel("subreddit")
                 .WithTitle(subreddit.Title)
-                .WithProperty("domain", subreddit.Url.OriginalString)
+                .WithProperty("domain", $"/r/{subreddit.DisplayName}")
                 .WithProperty("subscribers", subreddit.Subscribers)
                 .WithProperty("created", subreddit.Created)
                 .WithProperty("description", subreddit.PublicDescription);
