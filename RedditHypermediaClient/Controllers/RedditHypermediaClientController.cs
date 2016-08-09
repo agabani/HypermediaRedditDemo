@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Mvc;
+using RedditHypermediaClient.Clients.Siren;
 using RedditHypermediaClient.Extensions;
-using RedditHypermediaClient.Hypermedia.Siren;
 
 namespace RedditHypermediaClient.Controllers
 {

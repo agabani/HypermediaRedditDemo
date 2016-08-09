@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using RedditHypermediaClient.Hypermedia.Siren.Models;
+using RedditHypermediaClient.Clients.Siren.Models;
 
-namespace RedditHypermediaClient.Hypermedia.Siren
+namespace RedditHypermediaClient.Clients.Siren
 {
     public class SirenClient
     {

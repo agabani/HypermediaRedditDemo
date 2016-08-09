@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RedditHypermediaClient.Hypermedia.Siren.Models
+namespace RedditHypermediaClient.Clients.Siren.Models
 {
     public class Entity
     {

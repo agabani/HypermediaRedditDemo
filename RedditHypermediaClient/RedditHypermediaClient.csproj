@@ -232,12 +232,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hypermedia\Siren\Models\Action.cs" />
-    <Compile Include="Hypermedia\Siren\Models\Entity.cs" />
-    <Compile Include="Hypermedia\Siren\Models\Field.cs" />
-    <Compile Include="Hypermedia\Siren\Models\Link.cs" />
-    <Compile Include="Hypermedia\Siren\Proxy.cs" />
-    <Compile Include="Hypermedia\Siren\SirenClient.cs" />
+    <Compile Include="Clients\Siren\Models\Action.cs" />
+    <Compile Include="Clients\Siren\Models\Entity.cs" />
+    <Compile Include="Clients\Siren\Models\Field.cs" />
+    <Compile Include="Clients\Siren\Models\Link.cs" />
+    <Compile Include="Clients\Siren\SirenClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
