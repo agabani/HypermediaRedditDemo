@@ -8,6 +8,17 @@
 {
     foreach (var link in links.Where(l => l.Rel.Contains("listing")))
     {
-        <li><a href="@link.Href">@link.Title</a></li>
+        if (link.Class.Contains("active"))
+        {
+            <li class="active">
+                <a href="@link.Href">@link.Title</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@link.Href">@link.Title</a>
+            </li>
+        }
     }
 }

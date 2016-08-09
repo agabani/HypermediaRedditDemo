@@ -33,26 +33,6 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithClass("subreddit")
                 .WithClass("pagination")
                 .WithLink(new LinkBuilder()
-                    .WithClass("listing")
-                    .WithRel("listing")
-                    .WithHref($"{subreddit.Url.OriginalString}hot")
-                    .WithTitle("hot"))
-                .WithLink(new LinkBuilder()
-                    .WithClass("listing")
-                    .WithRel("listing")
-                    .WithHref($"{subreddit.Url.OriginalString}new")
-                    .WithTitle("new"))
-                .WithLink(new LinkBuilder()
-                    .WithClass("listing")
-                    .WithRel("listing")
-                    .WithHref($"{subreddit.Url.OriginalString}rising")
-                    .WithTitle("rising"))
-                .WithLink(new LinkBuilder()
-                    .WithClass("listing")
-                    .WithRel("listing")
-                    .WithHref($"{subreddit.Url.OriginalString}top")
-                    .WithTitle("top"))
-                .WithLink(new LinkBuilder()
                     .WithClass("pagination")
                     .WithRel("next")
                     .WithHref($"?count={nextPage}")
@@ -65,6 +45,8 @@ namespace RedditHypermediaApi.Services.Builders
                     .WithField(new FieldBuilder()
                         .WithName("q")
                         .WithType("text")));
+
+            BuildListings(entityBuilder, subreddit);
 
             if (previousPage != null)
             {
@@ -135,6 +117,32 @@ namespace RedditHypermediaApi.Services.Builders
             }
 
             return entityBuilder.Build();
+        }
+
+        private void BuildListings(EntityBuilder entityBuilder, Subreddit subreddit)
+        {
+            BuildListing(entityBuilder, subreddit, "hot");
+            BuildListing(entityBuilder, subreddit, "new");
+            BuildListing(entityBuilder, subreddit, "rising");
+            BuildListing(entityBuilder, subreddit, "top");
+        }
+
+        private void BuildListing(EntityBuilder entityBuilder, Subreddit subreddit, string listing)
+        {
+            var linkBuilder = new LinkBuilder()
+                .WithClass("listing")
+                .WithRel("listing")
+                .WithHref($"{subreddit.Url.OriginalString}{listing}")
+                .WithTitle(listing);
+
+            if (listing == _order)
+            {
+                linkBuilder
+                    .WithClass("active");
+            }
+
+            entityBuilder
+                .WithLink(linkBuilder);
         }
     }
 }
