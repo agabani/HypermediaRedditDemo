@@ -1,24 +1,74 @@
-﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+﻿@using RedditHypermediaClient.Clients.Siren.Models
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
 
 @{
     var links = Model.Links;
+
+    var listings = links?.Where(l => l.Rel.Contains("listing")) ?? new List<Link>();
+
+    var relatedListings = listings.GroupBy(l => string.Join(".", l.Rel.Where(r => r != "listing").OrderBy(x => x).Select(x => x)));
 }
 
-@if (links != null)
+
+@*@foreach (var link in listings)
 {
-    foreach (var link in links.Where(l => l.Rel.Contains("listing")))
+    if (link.Class?.Contains("active") ?? false)
     {
-        if (link.Class.Contains("active"))
+        <li class="active">
+            <a href="@link.Href">@link.Title</a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="@link.Href">@link.Title</a>
+        </li>
+    }
+}*@
+
+@foreach (var listing in relatedListings)
+{
+    if (listing.Count() == 1)
+    {
+        foreach (var link in listing)
         {
-            <li class="active">
-                <a href="@link.Href">@link.Title</a>
-            </li>
+            if (link.Class?.Contains("active") ?? false)
+            {
+                <li class="active">
+                    <a href="@link.Href">@link.Title</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="@link.Href">@link.Title</a>
+                </li>
+            }
         }
-        else
-        {
-            <li>
-                <a href="@link.Href">@link.Title</a>
-            </li>
-        }
+    }
+    else if (listing.Count() > 1)
+    {
+        var dropdownClass = listing.First().Class?.Contains("active") ?? false ? "dropdown active" : "dropdown";
+        <li class="@dropdownClass">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                @listing.First().Title <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                @foreach (var link in listing.Where(l => l != listing.First()))
+                {
+                    if (link.Class?.Contains("active") ?? false)
+                    {
+                        <li class="active">
+                            <a href="@link.Href">@link.Title</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@link.Href">@link.Title</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </li>
     }
 }

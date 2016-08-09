@@ -15,8 +15,8 @@ namespace RedditHypermediaApi.Services
         private static readonly Uri RedditBaseAddress = new Uri("https://www.reddit.com");
         private static readonly Regex PostUrlPattern = new Regex(@"r\/(\w+)\/comments\/(\w+)\/(\w*)");
         private static readonly Regex SearchUrlPattern = new Regex(@"search\?.*(?:q=([\w\+\ ]+))");
-        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)(?:\/?(hot|new|rising|top|gilded|wiki|ads))?");
-        private static readonly Regex FrontpageUrlPattern = new Regex(@"^(hot|new|rising|top|gilded|wiki|ads)");
+        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)(?:\/?(new|rising|top|gilded|wiki|ads))?(?:\/.*(?:&t=|\?t=)(hour|day|week|month|year|all)&?)?");
+        private static readonly Regex FrontpageUrlPattern = new Regex(@"^(hot|new|rising|top|gilded|wiki|ads)(?:\/.*(?:&t=|\?t=)(hour|day|week|month|year|all)&?)?");
 
         public Entity Get(string url)
         {
@@ -74,10 +74,17 @@ namespace RedditHypermediaApi.Services
 
                 var match = FrontpageUrlPattern.Match(url);
                 var whereOrder = match.Groups[1].Value;
+                var fromTime = match.Groups[2].Value;
 
                 if (!string.IsNullOrEmpty(whereOrder))
                 {
                     subredditBuilder.WhereOrder(whereOrder);
+                }
+
+                if (!string.IsNullOrEmpty(fromTime))
+                {
+                    subredditBuilder
+                        .Since(fromTime);
                 }
             }
 
@@ -142,11 +149,18 @@ namespace RedditHypermediaApi.Services
 
             var subRedditName = match.Groups[1].Value;
             var whereOrder = match.Groups[2].Value;
+            var fromTime = match.Groups[3].Value;
 
             if (!string.IsNullOrEmpty(whereOrder))
             {
                 subredditBuilder
                     .WhereOrder(whereOrder);
+            }
+
+            if (!string.IsNullOrEmpty(fromTime))
+            {
+                subredditBuilder
+                    .Since(fromTime);
             }
 
             return subredditBuilder.Build(new Reddit().GetSubreddit(subRedditName));

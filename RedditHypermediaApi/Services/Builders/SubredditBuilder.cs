@@ -10,6 +10,7 @@ namespace RedditHypermediaApi.Services.Builders
     {
         private int? _count;
         private string _order;
+        private string _since;
 
         public SubredditBuilder WithCount(int count)
         {
@@ -20,6 +21,12 @@ namespace RedditHypermediaApi.Services.Builders
         public SubredditBuilder WhereOrder(string order)
         {
             _order = order;
+            return this;
+        }
+
+        public SubredditBuilder Since(string fromTime)
+        {
+            _since = fromTime;
             return this;
         }
 
@@ -72,7 +79,30 @@ namespace RedditHypermediaApi.Services.Builders
                     listing = subreddit.Rising;
                     break;
                 case "top":
-                    listing = subreddit.GetTop(FromTime.Day);
+                    switch (_since)
+                    {
+                        case "hour":
+                            listing = subreddit.GetTop(FromTime.Hour);
+                            break;
+                        case "day":
+                            listing = subreddit.GetTop(FromTime.Day);
+                            break;
+                        case "week":
+                            listing = subreddit.GetTop(FromTime.Week);
+                            break;
+                        case "month":
+                            listing = subreddit.GetTop(FromTime.Month);
+                            break;
+                        case "year":
+                            listing = subreddit.GetTop(FromTime.Year);
+                            break;
+                        case "all":
+                            listing = subreddit.GetTop(FromTime.All);
+                            break;
+                        default:
+                            listing = subreddit.GetTop(FromTime.Week);
+                            break;
+                    }
                     break;
                 default:
                     listing = subreddit.Posts;
@@ -125,17 +155,41 @@ namespace RedditHypermediaApi.Services.Builders
             BuildListing(entityBuilder, subreddit, "new");
             BuildListing(entityBuilder, subreddit, "rising");
             BuildListing(entityBuilder, subreddit, "top");
+            BuildSort(entityBuilder, subreddit, "top", "hour", "past hour");
+            BuildSort(entityBuilder, subreddit, "top", "day", "past day");
+            BuildSort(entityBuilder, subreddit, "top", "week", "past week");
+            BuildSort(entityBuilder, subreddit, "top", "month", "past month");
+            BuildSort(entityBuilder, subreddit, "top", "year", "past year");
+            BuildSort(entityBuilder, subreddit, "top", "all", "all time");
         }
 
         private void BuildListing(EntityBuilder entityBuilder, Subreddit subreddit, string listing)
         {
             var linkBuilder = new LinkBuilder()
-                .WithClass("listing")
                 .WithRel("listing")
+                .WithRel(listing)
                 .WithHref($"{subreddit.Url.OriginalString}{listing}")
                 .WithTitle(listing);
 
             if (listing == _order)
+            {
+                linkBuilder
+                    .WithClass("active");
+            }
+
+            entityBuilder
+                .WithLink(linkBuilder);
+        }
+
+        private void BuildSort(EntityBuilder entityBuilder, Subreddit subreddit, string listing, string duration, string durataionText)
+        {
+            var linkBuilder = new LinkBuilder()
+                .WithRel("listing")
+                .WithRel(listing)
+                .WithHref($"{subreddit.Url.OriginalString}{listing}/?sort={listing}&t={duration}")
+                .WithTitle(durataionText);
+
+            if (duration == _since)
             {
                 linkBuilder
                     .WithClass("active");
