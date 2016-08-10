@@ -15,7 +15,7 @@ namespace RedditHypermediaApi.Services
         private static readonly Uri RedditBaseAddress = new Uri("https://www.reddit.com");
         private static readonly Regex PostUrlPattern = new Regex(@"r\/(\w+)\/comments\/(\w+)\/(\w*)");
         private static readonly Regex SearchUrlPattern = new Regex(@"search\?.*(?:q=([\w\+\ ]+))");
-        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)(?:\/?(new|rising|top|gilded|wiki|ads))?(?:\/.*(?:&t=|\?t=)(hour|day|week|month|year|all)&?)?");
+        private static readonly Regex SubredditUrlPattern = new Regex(@"r\/([\w]+)(?:\/?(hot|new|rising|top|gilded|wiki|ads))?(?:\/.*(?:&t=|\?t=)(hour|day|week|month|year|all)&?)?");
         private static readonly Regex FrontpageUrlPattern = new Regex(@"^(hot|new|rising|top|gilded|wiki|ads)(?:\/.*(?:&t=|\?t=)(hour|day|week|month|year|all)&?)?");
 
         public Entity Get(string url)

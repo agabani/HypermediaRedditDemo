@@ -67,7 +67,7 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithHref($"{subreddit.Url.OriginalString}{listing}")
                 .WithTitle(listing);
 
-            if (listing == _order)
+            if (listing == _order && _since == null)
             {
                 linkBuilder
                     .WithClass("active");
@@ -80,7 +80,7 @@ namespace RedditHypermediaApi.Services.Builders
         private void BuildListingDuration(EntityBuilder entityBuilder, Subreddit subreddit, string listing, string duration, string durataionText)
         {
             var linkBuilder = new LinkBuilder()
-                .WithRel("listing")
+                .WithRel("listing.time")
                 .WithRel(listing)
                 .WithHref($"{subreddit.Url.OriginalString}{listing}/?sort={listing}&t={duration}")
                 .WithTitle(durataionText);
