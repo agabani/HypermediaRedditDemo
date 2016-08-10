@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentSiren.Builders;
 using FluentSiren.Models;
 using RedditSharp;
@@ -32,12 +33,74 @@ namespace RedditHypermediaApi.Services.Builders
 
         public Entity Build(Subreddit subreddit)
         {
+            var entityBuilder = new EntityBuilder()
+                .WithClass("root")
+                .WithClass("subreddit");
+
+            BuildListings(entityBuilder, subreddit);
+            BuildPagination(entityBuilder);
+            BuildPosts(subreddit, entityBuilder);
+
+            return entityBuilder.Build();
+        }
+
+        private void BuildListings(EntityBuilder entityBuilder, Subreddit subreddit)
+        {
+            BuildListingOption(entityBuilder, subreddit, "hot");
+            BuildListingOption(entityBuilder, subreddit, "new");
+            BuildListingOption(entityBuilder, subreddit, "rising");
+            BuildListingOption(entityBuilder, subreddit, "top");
+
+            BuildListingDuration(entityBuilder, subreddit, "top", "hour", "past hour");
+            BuildListingDuration(entityBuilder, subreddit, "top", "day", "past day");
+            BuildListingDuration(entityBuilder, subreddit, "top", "week", "past week");
+            BuildListingDuration(entityBuilder, subreddit, "top", "month", "past month");
+            BuildListingDuration(entityBuilder, subreddit, "top", "year", "past year");
+            BuildListingDuration(entityBuilder, subreddit, "top", "all", "all time");
+        }
+
+        private void BuildListingOption(EntityBuilder entityBuilder, Subreddit subreddit, string listing)
+        {
+            var linkBuilder = new LinkBuilder()
+                .WithRel("listing")
+                .WithRel(listing)
+                .WithHref($"{subreddit.Url.OriginalString}{listing}")
+                .WithTitle(listing);
+
+            if (listing == _order)
+            {
+                linkBuilder
+                    .WithClass("active");
+            }
+
+            entityBuilder
+                .WithLink(linkBuilder);
+        }
+
+        private void BuildListingDuration(EntityBuilder entityBuilder, Subreddit subreddit, string listing, string duration, string durataionText)
+        {
+            var linkBuilder = new LinkBuilder()
+                .WithRel("listing")
+                .WithRel(listing)
+                .WithHref($"{subreddit.Url.OriginalString}{listing}/?sort={listing}&t={duration}")
+                .WithTitle(durataionText);
+
+            if (duration == _since)
+            {
+                linkBuilder
+                    .WithClass("active");
+            }
+
+            entityBuilder
+                .WithLink(linkBuilder);
+        }
+
+        private void BuildPagination(EntityBuilder entityBuilder)
+        {
             var previousPage = _count == null || _count <= 0 ? null : _count < 25 ? 0 : _count - 25;
             var nextPage = (_count ?? 0) + 25;
 
-            var entityBuilder = new EntityBuilder()
-                .WithClass("root")
-                .WithClass("subreddit")
+            entityBuilder
                 .WithClass("pagination")
                 .WithLink(new LinkBuilder()
                     .WithClass("pagination")
@@ -53,8 +116,6 @@ namespace RedditHypermediaApi.Services.Builders
                         .WithName("q")
                         .WithType("text")));
 
-            BuildListings(entityBuilder, subreddit);
-
             if (previousPage != null)
             {
                 entityBuilder
@@ -64,7 +125,20 @@ namespace RedditHypermediaApi.Services.Builders
                         .WithHref($"?count={previousPage}")
                         .WithTitle("Previous"));
             }
+        }
 
+        private void BuildPosts(Subreddit subreddit, EntityBuilder entityBuilder)
+        {
+            var listing = GetPosts(subreddit);
+
+            foreach (var post in listing.Skip(_count ?? 0).Take(25))
+            {
+                BuildPost(entityBuilder, post);
+            }
+        }
+
+        private IEnumerable<Post> GetPosts(Subreddit subreddit)
+        {
             Listing<Post> listing;
 
             switch (_order)
@@ -108,95 +182,44 @@ namespace RedditHypermediaApi.Services.Builders
                     listing = subreddit.Posts;
                     break;
             }
+            return listing;
+        }
 
-            foreach (var post in listing.Skip(_count ?? 0).Take(25))
+        private static void BuildPost(EntityBuilder entityBuilder, Post post)
+        {
+            var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
+                .WithClass("post")
+                .WithRel("post")
+                .WithTitle(post.Title)
+                .WithProperty("score", post.Score)
+                .WithProperty("subreddit", post.SubredditName)
+                .WithProperty("comments", post.CommentCount)
+                .WithProperty("submitted", post.CreatedUTC)
+                .WithProperty("authorName", post.AuthorName)
+                .WithProperty("domain", post.Domain)
+                .WithProperty("linkFlairText", post.LinkFlairText)
+                .WithLink(new LinkBuilder()
+                    .WithRel("self")
+                    .WithHref(post.Permalink.ToString()));
+
+            if (post.Thumbnail.OriginalString != string.Empty)
             {
-                var embeddedRepresentationBuilder = new EmbeddedRepresentationBuilder()
-                    .WithClass("post")
-                    .WithRel("post")
-                    .WithTitle(post.Title)
-                    .WithProperty("score", post.Score)
-                    .WithProperty("subreddit", post.SubredditName)
-                    .WithProperty("comments", post.CommentCount)
-                    .WithProperty("submitted", post.CreatedUTC)
-                    .WithProperty("authorName", post.AuthorName)
-                    .WithProperty("domain", post.Domain)
-                    .WithProperty("linkFlairText", post.LinkFlairText)
-                    .WithLink(new LinkBuilder()
-                        .WithRel("self")
-                        .WithHref(post.Permalink.ToString()));
+                embeddedRepresentationBuilder
+                    .WithProperty("url", post.Url);
 
-                if (post.Thumbnail.OriginalString != string.Empty)
+                if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
                 {
                     embeddedRepresentationBuilder
-                        .WithProperty("url", post.Url);
-
-                    if (post.Thumbnail.OriginalString == "self" || post.Thumbnail.OriginalString == "nsfw" || post.Thumbnail.OriginalString == "default")
-                    {
-                        embeddedRepresentationBuilder
-                            .WithProperty("thumbnail", "/" + post.Thumbnail);
-                    }
-                    else
-                    {
-                        embeddedRepresentationBuilder
-                            .WithProperty("thumbnail", post.Thumbnail);
-                    }
+                        .WithProperty("thumbnail", "/" + post.Thumbnail);
                 }
-
-                entityBuilder.WithSubEntity(embeddedRepresentationBuilder);
+                else
+                {
+                    embeddedRepresentationBuilder
+                        .WithProperty("thumbnail", post.Thumbnail);
+                }
             }
 
-            return entityBuilder.Build();
-        }
-
-        private void BuildListings(EntityBuilder entityBuilder, Subreddit subreddit)
-        {
-            BuildListing(entityBuilder, subreddit, "hot");
-            BuildListing(entityBuilder, subreddit, "new");
-            BuildListing(entityBuilder, subreddit, "rising");
-            BuildListing(entityBuilder, subreddit, "top");
-            BuildSort(entityBuilder, subreddit, "top", "hour", "past hour");
-            BuildSort(entityBuilder, subreddit, "top", "day", "past day");
-            BuildSort(entityBuilder, subreddit, "top", "week", "past week");
-            BuildSort(entityBuilder, subreddit, "top", "month", "past month");
-            BuildSort(entityBuilder, subreddit, "top", "year", "past year");
-            BuildSort(entityBuilder, subreddit, "top", "all", "all time");
-        }
-
-        private void BuildListing(EntityBuilder entityBuilder, Subreddit subreddit, string listing)
-        {
-            var linkBuilder = new LinkBuilder()
-                .WithRel("listing")
-                .WithRel(listing)
-                .WithHref($"{subreddit.Url.OriginalString}{listing}")
-                .WithTitle(listing);
-
-            if (listing == _order)
-            {
-                linkBuilder
-                    .WithClass("active");
-            }
-
-            entityBuilder
-                .WithLink(linkBuilder);
-        }
-
-        private void BuildSort(EntityBuilder entityBuilder, Subreddit subreddit, string listing, string duration, string durataionText)
-        {
-            var linkBuilder = new LinkBuilder()
-                .WithRel("listing")
-                .WithRel(listing)
-                .WithHref($"{subreddit.Url.OriginalString}{listing}/?sort={listing}&t={duration}")
-                .WithTitle(durataionText);
-
-            if (duration == _since)
-            {
-                linkBuilder
-                    .WithClass("active");
-            }
-
-            entityBuilder
-                .WithLink(linkBuilder);
+            entityBuilder.WithSubEntity(embeddedRepresentationBuilder);
         }
     }
 }
