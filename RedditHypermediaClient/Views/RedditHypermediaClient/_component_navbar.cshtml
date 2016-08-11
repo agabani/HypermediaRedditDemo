@@ -13,19 +13,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Hypermedia Reddit</a>
+
+            @Html.Partial("_component_navbar_brand", entity)
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                @Html.Partial("_link_listing", entity)
+                @Html.Partial("_component_navbar_navigation", entity)
             </ul>
 
-            @Html.Partial("_action_search", entity)
+            @Html.Partial("_component_navbar_action", entity)
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/agabani/HypermediaRedditDemo">GitHub</a></li>
-                <li><a data-toggle="modal" data-target="#responseModal">View JSON response</a></li>
+                <li>
+                    <a href="https://github.com/agabani/HypermediaRedditDemo">GitHub</a>
+                </li>
+                <li>
+                    <a data-toggle="modal" data-target="#responseModal">View JSON response</a>
+                </li>
             </ul>
         </div>
     </div>

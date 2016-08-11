@@ -1,0 +1,29 @@
+﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+        <h2>Sub Entities</h2>
+        <hr/>
+        @Html.Partial("_subentity_default", entity)
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+
+        <h2>Links</h2>
+        <hr/>
+        @Html.Partial("_link_default", entity)
+
+    </div>
+    <div class="col-sm-6 col-md-8">
+
+        <h2>Actions</h2>
+        @Html.Partial("_action_default", entity)
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@using RedditHypermediaClient.Clients.Siren.Models
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+    var links = entity?.Links ?? new List<Link>();
+}
+
+<ul>
+    @foreach (var link in links)
+    {
+        var title = link.Title ?? string.Join(" ", link.Rel);
+
+        <li>
+            <a href="@link.Href" data-toggle="tooltip" title="@string.Join(" ", link.Rel)">@title</a>
+        </li>
+    }
+</ul>

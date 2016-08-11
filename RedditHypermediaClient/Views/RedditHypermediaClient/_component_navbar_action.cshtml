@@ -7,14 +7,14 @@
 
 @if (actions != null)
 {
-    foreach (var action in actions)
+    foreach (var action in actions.Where(a => a.Class.Contains("navigation")))
     {
         <form class="navbar-form navbar-left" method="@action.Method" action="@action.Href">
 
             @foreach (var field in action.Fields)
             {
                 <div class="form-group">
-                    <input type="@field.Type" class="form-control" id="@field.Name" name="@field.Name" value="@field.Value" />
+                    <input type="@field.Type" class="form-control" id="@field.Name" name="@field.Name" value="@field.Value"/>
                 </div>
             }
 

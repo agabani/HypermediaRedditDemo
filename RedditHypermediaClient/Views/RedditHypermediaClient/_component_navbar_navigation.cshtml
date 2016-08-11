@@ -20,7 +20,7 @@
 @{
     var links = Model.Links;
 
-    var listings = links?.Where(l => l.Rel.Any(r => r.StartsWith("listing"))) ?? new List<Link>();
+    var listings = links?.Where(l => l.Class.Any(c => c == "navigation") && l.Class.All(c => c != "brand") ) ?? new List<Link>();
 
     var relatedListings = listings.GroupBy(l => string.Join(".", l.Rel.Where(r => !r.StartsWith("listing")).OrderBy(x => x).Select(x => x)));
 }

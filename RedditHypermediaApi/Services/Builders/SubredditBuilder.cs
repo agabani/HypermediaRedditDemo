@@ -38,8 +38,18 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithClass("subreddit");
 
             BuildListings(entityBuilder, subreddit);
+            BuildSearch(entityBuilder);
             BuildPagination(entityBuilder);
             BuildPosts(subreddit, entityBuilder);
+
+            entityBuilder
+                .WithLink(new LinkBuilder()
+                    .WithTitle("Hypermedia Reddit")
+                    .WithClass("brand")
+                    .WithClass("navigation")
+                    .WithRel("root")
+                    .WithRel("navigation")
+                    .WithHref("/"));
 
             return entityBuilder.Build();
         }
@@ -62,6 +72,7 @@ namespace RedditHypermediaApi.Services.Builders
         private void BuildListingOption(EntityBuilder entityBuilder, Subreddit subreddit, string listing)
         {
             var linkBuilder = new LinkBuilder()
+                .WithClass("navigation")
                 .WithRel("listing")
                 .WithRel(listing)
                 .WithHref($"{subreddit.Url.OriginalString}{listing}")
@@ -80,6 +91,7 @@ namespace RedditHypermediaApi.Services.Builders
         private void BuildListingDuration(EntityBuilder entityBuilder, Subreddit subreddit, string listing, string duration, string durataionText)
         {
             var linkBuilder = new LinkBuilder()
+                .WithClass("navigation")
                 .WithRel("listing.time")
                 .WithRel(listing)
                 .WithHref($"{subreddit.Url.OriginalString}{listing}/?sort={listing}&t={duration}")
@@ -106,15 +118,7 @@ namespace RedditHypermediaApi.Services.Builders
                     .WithClass("pagination")
                     .WithRel("next")
                     .WithHref($"?count={nextPage}")
-                    .WithTitle("Next"))
-                .WithAction(new ActionBuilder()
-                    .WithName("search")
-                    .WithTitle("Search")
-                    .WithMethod("GET")
-                    .WithHref("/search")
-                    .WithField(new FieldBuilder()
-                        .WithName("q")
-                        .WithType("text")));
+                    .WithTitle("Next"));
 
             if (previousPage != null)
             {
@@ -125,6 +129,20 @@ namespace RedditHypermediaApi.Services.Builders
                         .WithHref($"?count={previousPage}")
                         .WithTitle("Previous"));
             }
+        }
+
+        private void BuildSearch(EntityBuilder entityBuilder)
+        {
+            entityBuilder
+                .WithAction(new ActionBuilder()
+                    .WithClass("navigation")
+                    .WithName("search")
+                    .WithTitle("Search")
+                    .WithMethod("GET")
+                    .WithHref("/search")
+                    .WithField(new FieldBuilder()
+                        .WithName("q")
+                        .WithType("text")));
         }
 
         private void BuildPosts(Subreddit subreddit, EntityBuilder entityBuilder)

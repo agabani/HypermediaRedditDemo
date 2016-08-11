@@ -161,6 +161,11 @@
     </Content>
     <Content Include="scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="scripts\jquery-3.1.0.min.map" />
+    <Content Include="Views\RedditHypermediaClient\_component_navbar_brand.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_entity_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_subentity_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_action_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_link_default.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -204,13 +209,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\RedditHypermediaClient\_action_search.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_component_navbar_action.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_component_navbar.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_debug_json.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_entity_post.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_entity_search.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_entity_subreddit.cshtml" />
-    <Content Include="Views\RedditHypermediaClient\_link_listing.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_component_navbar_navigation.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_link_pagination.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_link_search_postpagination.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_link_search_subredditpagination.cshtml" />

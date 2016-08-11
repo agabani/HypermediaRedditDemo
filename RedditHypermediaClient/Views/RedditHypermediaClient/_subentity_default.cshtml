@@ -1,0 +1,54 @@
+﻿@using RedditHypermediaClient.Clients.Siren.Models
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+
+    var subentities = entity?.Entities ?? new List<Entity>();
+}
+
+@foreach (var subentity in subentities)
+{
+    <h4>@subentity.Title</h4>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h4>Properties</h4>
+            <hr/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                @foreach (var property in subentity.Properties)
+                {
+                    <tr>
+                        <td>@property.Key</td>
+                        <td>@property.Value</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Sub Entities</h4>
+            <hr/>
+            @Html.Partial("_subentity_default", subentity)
+        </div>
+
+        <div class="col-md-6">
+            <h4>Links</h4>
+            <hr/>
+            @Html.Partial("_link_default", subentity)
+        </div>
+
+        <div class="col-md-6">
+            <h4>Actions</h4>
+            @Html.Partial("_action_default", subentity)
+        </div>
+
+    </div>
+}

@@ -1,0 +1,22 @@
+﻿@using Action = RedditHypermediaClient.Clients.Siren.Models.Action
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+    var actions = Model?.Actions ?? new List<Action>();
+}
+
+@foreach (var action in actions)
+{
+    <hr/>
+    <form method="@action.Method" action="@action.Href">
+        @foreach (var field in action.Fields)
+        {
+            <div class="form-group">
+                <label for="@field.Name">@field.Title</label>
+                <input type="@field.Type" class="form-control" id="@field.Name" name="@field.Name" value="@field.Value"/>
+            </div>
+        }
+        <button type="submit" class="btn btn-default">@action.Title</button>
+    </form>
+}
