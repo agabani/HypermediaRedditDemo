@@ -165,7 +165,10 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithProperty("domain", $"/r/{subreddit.DisplayName}")
                 .WithProperty("subscribers", subreddit.Subscribers)
                 .WithProperty("created", subreddit.Created)
-                .WithProperty("description", subreddit.PublicDescription);
+                .WithProperty("description", subreddit.PublicDescription)
+                .WithLink(new LinkBuilder()
+                    .WithRel("self")
+                    .WithHref($"/r/{subreddit.DisplayName}"));
 
             return embeddedRepresentationBuilder;
         }

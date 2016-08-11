@@ -1,0 +1,13 @@
+﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+    var classes = Model?.Class ?? new List<string>();
+}
+
+<ul>
+    @foreach (var value in classes)
+    {
+        <li>@value</li>
+    }
+</ul>

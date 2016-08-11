@@ -9,46 +9,42 @@
 
 @foreach (var subentity in subentities)
 {
-    <h4>@subentity.Title</h4>
+    <div style="border-left: 1px lightgrey solid; padding-left: 10px;">
+        <h3>@subentity.Title</h3>
 
-    <div class="row">
-        <div class="col-md-6">
+        <div class="row">
 
-            <h4>Properties</h4>
-            <hr/>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
-                @foreach (var property in subentity.Properties)
-                {
-                    <tr>
-                        <td>@property.Key</td>
-                        <td>@property.Value</td>
-                    </tr>
-                }
-            </table>
+            <div class="col-md-6">
+
+                <h4>Properties</h4>
+                <hr />
+                @Html.Partial("_property_default", subentity)
+            </div>
+
+            <div class="col-md-6">
+                <h4>Class</h4>
+                <hr />
+                @Html.Partial("_class_default", subentity)
+            </div>
+
+            <div class="col-md-6">
+                <h4>Links</h4>
+                <hr />
+                @Html.Partial("_link_default", subentity)
+            </div>
+
+            <div class="col-md-6">
+                <h4>Actions</h4>
+                <hr />
+                @Html.Partial("_action_default", subentity)
+            </div>
+
+            <div class="col-md-12">
+                <h4>Sub Entities</h4>
+                <hr />
+                @Html.Partial("_subentity_default", subentity)
+            </div>
+
         </div>
-
-        <div class="col-md-6">
-            <h4>Sub Entities</h4>
-            <hr/>
-            @Html.Partial("_subentity_default", subentity)
-        </div>
-
-        <div class="col-md-6">
-            <h4>Links</h4>
-            <hr/>
-            @Html.Partial("_link_default", subentity)
-        </div>
-
-        <div class="col-md-6">
-            <h4>Actions</h4>
-            @Html.Partial("_action_default", subentity)
-        </div>
-
     </div>
 }
