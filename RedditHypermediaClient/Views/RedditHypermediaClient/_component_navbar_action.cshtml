@@ -1,24 +1,22 @@
-﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+﻿@using Action = RedditHypermediaClient.Clients.Siren.Models.Action
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
 
 @{
     var entity = Model;
-    var actions = entity.Actions;
+    var actions = entity.Actions?.Where(a => a.Class?.Contains("navigation") ?? false) ?? new List<Action>();
 }
 
-@if (actions != null)
+@foreach (var action in actions)
 {
-    foreach (var action in actions.Where(a => a.Class.Contains("navigation")))
-    {
-        <form class="navbar-form navbar-left" method="@action.Method" action="@action.Href">
+    <form class="navbar-form navbar-left" method="@action.Method" action="@action.Href">
 
-            @foreach (var field in action.Fields)
-            {
-                <div class="form-group">
-                    <input type="@field.Type" class="form-control" id="@field.Name" name="@field.Name" value="@field.Value"/>
-                </div>
-            }
+        @foreach (var field in action.Fields)
+        {
+            <div class="form-group">
+                <input type="@field.Type" class="form-control" id="@field.Name" name="@field.Name" value="@field.Value"/>
+            </div>
+        }
 
-            <button type="submit" class="btn btn-default">@action.Title</button>
-        </form>
-    }
+        <button type="submit" class="btn btn-default">@action.Title</button>
+    </form>
 }

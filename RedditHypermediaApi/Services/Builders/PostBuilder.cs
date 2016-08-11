@@ -21,6 +21,8 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithProperty("comments", post.CommentCount)
                 .WithProperty("selfText", post.SelfText);
 
+            BuildBrand(entityBuilder);
+
             if (post.Thumbnail.OriginalString != string.Empty)
             {
                 entityBuilder
@@ -41,6 +43,18 @@ namespace RedditHypermediaApi.Services.Builders
             BuildCommentTree(post, entityBuilder);
 
             return entityBuilder.Build();
+        }
+
+        private static void BuildBrand(EntityBuilder entityBuilder)
+        {
+            entityBuilder
+                .WithLink(new LinkBuilder()
+                    .WithTitle("Hypermedia Reddit")
+                    .WithClass("brand")
+                    .WithClass("navigation")
+                    .WithRel("root")
+                    .WithRel("navigation")
+                    .WithHref("/"));
         }
 
         private static void BuildCommentTree(Post post, EntityBuilder builder)

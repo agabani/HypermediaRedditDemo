@@ -1,11 +1,13 @@
-﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+﻿@using RedditHypermediaClient.Clients.Siren.Models
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
 
 @{
     var entity = Model;
+    var brands = entity.Links?.Where(link => link.Class.Contains("brand")) ?? new List<Link>();
 }
 
 @{
-    foreach (var brand in entity.Links.Where(link => link.Class.Contains("brand")))
+    foreach (var brand in brands)
     {
         <a class="navbar-brand" href="@brand.Href">@brand.Title</a>
     }

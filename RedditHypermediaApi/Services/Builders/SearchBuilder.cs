@@ -44,16 +44,10 @@ namespace RedditHypermediaApi.Services.Builders
             var nextPage = _count + 25;
 
             var entityBuilder = new EntityBuilder()
-                .WithClass("search")
-                .WithAction(new ActionBuilder()
-                    .WithName("search")
-                    .WithTitle("Search")
-                    .WithMethod("GET")
-                    .WithHref("/search")
-                    .WithField(new FieldBuilder()
-                        .WithName("q")
-                        .WithType("text")
-                        .WithValue(_query)));
+                .WithClass("search");
+
+            BuildBrand(entityBuilder);
+            BuildSearch(entityBuilder);
 
             if (_onlySubreddit)
             {
@@ -68,12 +62,12 @@ namespace RedditHypermediaApi.Services.Builders
                 if (previousPage != null)
                 {
                     entityBuilder
-                    .WithLink(new LinkBuilder()
-                        .WithClass("pagination")
-                        .WithRel("previous")
-                        .WithRel("subreddit")
-                        .WithHref($"?q={_query}&type=subreddit&count={previousPage}")
-                        .WithTitle("previous"));
+                        .WithLink(new LinkBuilder()
+                            .WithClass("pagination")
+                            .WithRel("previous")
+                            .WithRel("subreddit")
+                            .WithHref($"?q={_query}&type=subreddit&count={previousPage}")
+                            .WithTitle("previous"));
                 }
             }
             else if (_onlyPost)
@@ -89,12 +83,12 @@ namespace RedditHypermediaApi.Services.Builders
                 if (previousPage != null)
                 {
                     entityBuilder
-                    .WithLink(new LinkBuilder()
-                        .WithClass("pagination")
-                        .WithRel("previous")
-                        .WithRel("post")
-                        .WithHref($"?q={_query}&type=post&count={previousPage}")
-                        .WithTitle("previous"));
+                        .WithLink(new LinkBuilder()
+                            .WithClass("pagination")
+                            .WithRel("previous")
+                            .WithRel("post")
+                            .WithHref($"?q={_query}&type=post&count={previousPage}")
+                            .WithTitle("previous"));
                 }
             }
             else
@@ -133,6 +127,33 @@ namespace RedditHypermediaApi.Services.Builders
 
             return entityBuilder
                 .Build();
+        }
+
+        private static void BuildBrand(EntityBuilder entityBuilder)
+        {
+            entityBuilder
+                .WithLink(new LinkBuilder()
+                    .WithTitle("Hypermedia Reddit")
+                    .WithClass("brand")
+                    .WithClass("navigation")
+                    .WithRel("root")
+                    .WithRel("navigation")
+                    .WithHref("/"));
+        }
+
+        private void BuildSearch(EntityBuilder entityBuilder)
+        {
+            entityBuilder
+                .WithAction(new ActionBuilder()
+                    .WithClass("navigation")
+                    .WithName("search")
+                    .WithTitle("Search")
+                    .WithMethod("GET")
+                    .WithHref("/search")
+                    .WithField(new FieldBuilder()
+                        .WithName("q")
+                        .WithType("text")
+                        .WithValue(_query)));
         }
 
         private static EmbeddedRepresentationBuilder Build(Subreddit subreddit)

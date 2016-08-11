@@ -37,11 +37,17 @@ namespace RedditHypermediaApi.Services.Builders
                 .WithClass("root")
                 .WithClass("subreddit");
 
+            BuildBrand(entityBuilder);
             BuildListings(entityBuilder, subreddit);
             BuildSearch(entityBuilder);
             BuildPagination(entityBuilder);
             BuildPosts(subreddit, entityBuilder);
 
+            return entityBuilder.Build();
+        }
+
+        private static void BuildBrand(EntityBuilder entityBuilder)
+        {
             entityBuilder
                 .WithLink(new LinkBuilder()
                     .WithTitle("Hypermedia Reddit")
@@ -50,8 +56,6 @@ namespace RedditHypermediaApi.Services.Builders
                     .WithRel("root")
                     .WithRel("navigation")
                     .WithHref("/"));
-
-            return entityBuilder.Build();
         }
 
         private void BuildListings(EntityBuilder entityBuilder, Subreddit subreddit)
