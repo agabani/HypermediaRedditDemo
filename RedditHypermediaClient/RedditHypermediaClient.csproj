@@ -166,6 +166,8 @@
     <Content Include="Views\RedditHypermediaClient\_subentity_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_action_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_link_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_class_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_property_default.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
