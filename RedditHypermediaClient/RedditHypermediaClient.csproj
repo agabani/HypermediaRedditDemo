@@ -168,6 +168,16 @@
     <Content Include="Views\RedditHypermediaClient\_link_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_class_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_property_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__entities.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__links.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__actions.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__classes.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__properties.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__actions_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__classes_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__entities_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__links_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\__properties_default.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

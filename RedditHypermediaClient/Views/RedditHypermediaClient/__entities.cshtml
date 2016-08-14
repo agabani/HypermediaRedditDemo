@@ -1,0 +1,17 @@
+﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+}
+
+
+@Html.Partial("__properties", entity)
+
+@Html.Partial("__classes", entity)
+
+@Html.Partial("__links", entity)
+
+@Html.Partial("__actions", entity)
+
+
+@Html.Partial("__entities_default", entity)

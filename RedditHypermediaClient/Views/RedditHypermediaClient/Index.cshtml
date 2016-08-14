@@ -4,12 +4,18 @@
     var entity = Model;
 }
 
-@section header
+<div class="row">
+
+    @Html.Partial("__entities")
+
+</div>
+
+@*@section header
 {
     @Html.Partial("_component_navbar", entity)
 }
 
-@*@if (entity.Class.Contains("subreddit"))
+@if (entity.Class.Contains("subreddit"))
 {
     @Html.Partial("_entity_subreddit", entity)
 }
@@ -20,9 +26,9 @@ else if (entity.Class.Contains("post"))
 else if (entity.Class.Contains("search"))
 {
     @Html.Partial("_entity_search", entity)
-}*@
+}
 
 @Html.Partial("_entity_default", entity)
 
 
-@Html.Partial("_debug_json")
+@Html.Partial("_debug_json")*@

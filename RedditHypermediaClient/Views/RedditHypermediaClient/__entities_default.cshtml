@@ -1,0 +1,23 @@
+﻿@using RedditHypermediaClient.Clients.Siren.Models
+@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+    var subentities = entity.Entities ?? new List<Entity>();
+}
+
+@foreach (var subentity in subentities)
+{
+    <div class="col-md-12">
+
+        <h2>Sub Entities</h2>
+
+        <hr />
+
+        <div class="row" style="border-left: 1px lightgrey solid; padding-left: 10px;">
+            <h3>@subentity.Title</h3>
+            @Html.Partial("__entities", subentity)
+        </div>
+
+    </div>
+}

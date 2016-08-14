@@ -1,0 +1,30 @@
+﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+
+@{
+    var entity = Model;
+    var properties = entity.Properties ?? new Dictionary<string, dynamic>();
+}
+
+<div class="col-md-6">
+
+    <h2>Properties</h2>
+
+    <hr/>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        @foreach (var property in properties)
+        {
+            <tr>
+                <td>@property.Key</td>
+                <td>@property.Value</td>
+            </tr>
+        }
+    </table>
+
+</div>
