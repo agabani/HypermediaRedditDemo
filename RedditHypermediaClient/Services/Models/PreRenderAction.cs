@@ -6,7 +6,7 @@ namespace RedditHypermediaClient.Services.Models
     {
         public string Method { get; set; }
         public string Action { get; set; }
-        public List<PreRenderActionField> Fields { get; set; }
+        public IEnumerable<PreRenderActionField> Fields { get; set; }
         public PreRenderActionButton Button { get; set; }
     }
 }

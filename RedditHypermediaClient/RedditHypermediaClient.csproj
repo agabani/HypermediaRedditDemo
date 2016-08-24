@@ -179,6 +179,7 @@
     <Content Include="Views\RedditHypermediaClient\__links_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\__properties_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\_render_navigational_bar.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_render_pagination.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -262,6 +263,7 @@
     <Compile Include="Services\Models\PreRenderAction.cs" />
     <Compile Include="Services\Models\PreRenderActionButton.cs" />
     <Compile Include="Services\Models\PreRenderActionField.cs" />
+    <Compile Include="Services\Models\PreRenderPagination.cs" />
     <Compile Include="Services\PreRenderService.cs" />
   </ItemGroup>
   <PropertyGroup>

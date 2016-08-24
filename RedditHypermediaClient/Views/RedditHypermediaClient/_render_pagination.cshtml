@@ -1,0 +1,26 @@
+﻿@model RedditHypermediaClient.Services.Models.PreRenderPagination
+
+@{
+    var pagination = Model;
+}
+
+<nav>
+    <ul class="pager">
+
+        @if (pagination.Previous != null)
+        {
+            <li class="previous">
+                <a href="@pagination.Previous.Href">
+                    <span aria-hidden="true">&larr;</span> @pagination.Previous.Text</a>
+            </li>
+        }
+
+        @if (pagination.Next != null)
+        {
+            <li class="next">
+                <a href="@pagination.Next.Href">
+                    <span aria-hidden="true">&rarr;</span> @pagination.Next.Text</a>
+            </li>
+        }
+    </ul>
+</nav>

@@ -4,8 +4,8 @@ namespace RedditHypermediaClient.Services.Models
 {
     public class PreRender
     {
-        public PreRenderNavigationalBar PreRenderNavigationalBar { get; set; }
+        public PreRenderNavigationalBar NavigationalBar { get; set; }
+        public PreRenderPagination Pagination { get; set; }
         public Entity Entity { get; set; }
-
     }
 }

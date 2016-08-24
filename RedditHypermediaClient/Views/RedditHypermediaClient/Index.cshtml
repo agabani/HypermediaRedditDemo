@@ -36,7 +36,11 @@ else if (entity.Class.Contains("search"))
 
 @section header
 {
-    @Html.Partial("_render_navigational_bar", preRender.PreRenderNavigationalBar)
+    @Html.Partial("_render_navigational_bar", preRender.NavigationalBar)
 }
+
+@Html.Partial("_render_pagination", preRender.Pagination)
+
+@Html.Partial("_render_pagination", preRender.Pagination)
 
 @Html.Partial("_debug_json", preRender.Entity)
