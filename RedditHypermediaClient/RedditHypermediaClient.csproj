@@ -178,6 +178,7 @@
     <Content Include="Views\RedditHypermediaClient\__entities_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\__links_default.cshtml" />
     <Content Include="Views\RedditHypermediaClient\__properties_default.cshtml" />
+    <Content Include="Views\RedditHypermediaClient\_render_navigational_bar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -255,8 +256,14 @@
     <Compile Include="Clients\Siren\Models\Link.cs" />
     <Compile Include="Clients\Siren\SirenClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Models\PreRenderNavigationalBar.cs" />
+    <Compile Include="Services\Models\PreRenderLink.cs" />
+    <Compile Include="Services\Models\PreRender.cs" />
+    <Compile Include="Services\Models\PreRenderAction.cs" />
+    <Compile Include="Services\Models\PreRenderActionButton.cs" />
+    <Compile Include="Services\Models\PreRenderActionField.cs" />
+    <Compile Include="Services\PreRenderService.cs" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

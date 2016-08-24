@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using RedditHypermediaClient.Clients.Siren;
 using RedditHypermediaClient.Extensions;
+using RedditHypermediaClient.Services;
 
 namespace RedditHypermediaClient.Controllers
 {
@@ -12,7 +13,13 @@ namespace RedditHypermediaClient.Controllers
         public ActionResult Index(string url)
         {
             var relativeUri = url == null ? $"{Request.Query()}" : $"/{url}{Request.Query()}";
-            return View(new SirenClient(new Uri(ConfigurationManager.AppSettings["hypermedia.api.baseurl"])).Get(relativeUri));
+
+            var entity = new SirenClient(new Uri(ConfigurationManager.AppSettings["hypermedia.api.baseurl"])).Get(relativeUri);
+            //return View(entity);
+
+            var preRender = new PreRenderService().PreRender(entity);
+
+            return View(preRender);
         }
     }
 }

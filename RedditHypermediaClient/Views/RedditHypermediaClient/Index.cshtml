@@ -1,16 +1,16 @@
-﻿@model RedditHypermediaClient.Clients.Siren.Models.Entity
+﻿@model RedditHypermediaClient.Services.Models.PreRender
 
 @{
-    var entity = Model;
+    var preRender = Model;
 }
 
-<div class="row">
+@*<div class="row">
 
     @Html.Partial("__entities")
 
 </div>
 
-@*@section header
+@section header
 {
     @Html.Partial("_component_navbar", entity)
 }
@@ -28,7 +28,15 @@ else if (entity.Class.Contains("search"))
     @Html.Partial("_entity_search", entity)
 }
 
+
 @Html.Partial("_entity_default", entity)
 
 
-@Html.Partial("_debug_json")*@
+*@
+
+@section header
+{
+    @Html.Partial("_render_navigational_bar", preRender.PreRenderNavigationalBar)
+}
+
+@Html.Partial("_debug_json", preRender.Entity)
